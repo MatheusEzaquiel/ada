@@ -7,8 +7,8 @@ public record CreateFuncionarioDTO(
 		
 		String cpf,
 		String login,
-		String nome_completo,
-		LocalDate data_nascimento,
+		String nomeCompleto,
+		LocalDate dataNascimento,
 		String email,
 		String telefone,
 		String senha,
