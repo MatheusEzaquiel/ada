@@ -20,26 +20,55 @@ public class Funcionario {
 	private String cpf;
 	private String login;
 	private String apelido;
-	private String nome_completo;
-	private LocalDate data_nascimento;
+	private String nomeCompleto;
+	private LocalDate dataNascimento;
 	private String email;
 	private String telefone;
 	private String senha;
 	private String foto;
-	private int carga_horaria_diaria;
-	private int carga_horaria_mensal;
-	private LocalTime horario_entrada;
-	private LocalTime horario_intervalo_entrada;
-	private LocalTime horario_intervalo_saida;
-	private LocalTime horario_saida;
-	private LocalTime horario_folga_entrada;
-	private LocalTime horario_folga_saida;
-	private String dia_folga;
-	private int quantidade_faltas;
-	private int quantidade_faltas_justificadas;
-	private int quantidade_horas_extras;
+	private int cargaHorariaDiaria;
+	private int cargaHorariaMensal;
+	private LocalTime horarioEntrada;
+	private LocalTime horarioIntervaloEntrada;
+	private LocalTime horarioIntervaloSaida;
+	private LocalTime horarioSaida;
+	private LocalTime horarioFolgaEntrada;
+	private LocalTime horarioFolgaSaida;
+	private String diaFolga;
+	private int quantidadeFaltas;
+	private int quantidadeFaltasJustificadas;
+	private int quantidadeHorasExtras;
 	private boolean ativo;
-	private int id_empresa;
-	private int id_cargo;
+	private int idEmpresa;
+	private int idCargo;
 	
-}
+	public Funcionario(CreateFuncionarioDTO data) {
+			
+			super();
+			this.cpf = data.cpf();
+			this.login = data.login();
+			this.apelido = "usuário";
+			this.nomeCompleto = data.nome_completo();
+			this.dataNascimento = data.data_nascimento();
+			this.email = data.email();
+			this.telefone = data.telefone();
+			this.senha = data.senha();
+			this.foto = data.foto();
+			this.cargaHorariaDiaria = data.cargaHorariaDiaria();
+			this.cargaHorariaMensal = data.cargaHorariaMensal();
+			this.horarioEntrada = data.horarioEntrada();
+			this.horarioIntervaloEntrada = data.horarioIntervaloEntrada();
+			this.horarioIntervaloSaida = data.horarioIntervaloSaida();
+			this.horarioSaida = data.horarioSaida();
+			this.horarioFolgaEntrada = data.horarioFolgaEntrada();
+			this.horarioFolgaSaida = data.horarioFolgaSaida();
+			this.diaFolga = data.diaFolga();
+			this.quantidadeFaltas = 0;
+			this.quantidadeFaltasJustificadas = 0;
+			this.quantidadeHorasExtras = 0;
+			this.ativo = true;
+			this.idEmpresa = data.idEmpresa();
+			this.idCargo = data.idCargo();
+			
+		}
+	}
