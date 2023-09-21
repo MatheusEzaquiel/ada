@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,15 @@ public class FuncionarioController {
 		var page = repository.findAll(paginacao).map(ListFuncionarioDTO::new);
 		
 		return ResponseEntity.ok(page);
+		
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity detail(@PathVariable Long id) {
+		
+		var funcionario = repository.findById(id);
+	
+		return ResponseEntity.ok(funcionario);
 		
 	}
 	
