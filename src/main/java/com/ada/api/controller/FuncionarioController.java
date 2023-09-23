@@ -44,9 +44,9 @@ public class FuncionarioController {
 	@GetMapping("/{id}")
 	public ResponseEntity detail(@PathVariable Long id) {
 		
-		var funcionario = repository.findById(id);
+		var funcionario = repository.getReferenceById(id);
 	
-		return ResponseEntity.ok(funcionario);
+		return ResponseEntity.ok(new DetailFuncionarioDTO(funcionario));
 		
 	}
 	
@@ -72,7 +72,7 @@ public class FuncionarioController {
 		Funcionario funcionario = repository.getReferenceById(data.id());
 		funcionario.updateByAdmin(data);
 		
-		return ResponseEntity.ok("ok");
+		return ResponseEntity.ok(new DetailFuncionarioDTO(funcionario));
 				
 	}
 	
