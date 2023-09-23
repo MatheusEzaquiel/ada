@@ -83,103 +83,114 @@ public class Funcionario {
 	}
 
 	public void updateByAdmin(UpdateFuncionarioDTO funcionario) {
-		
+
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		
-		if(funcionario.id() != null) {
+
+		if (funcionario.id() != null) {
 			this.id = funcionario.id();
 		}
-		
-		if(funcionario.cpf() != null && funcionario.cpf() != "") {
+
+		if (funcionario.cpf() != null && funcionario.cpf() != "") {
 			this.id = funcionario.id();
 		}
-		
-		if(funcionario.login() != null && funcionario.login() != "") {
+
+		if (funcionario.login() != null && funcionario.login() != "") {
 			this.login = funcionario.login();
 		}
-		
-		if(funcionario.nomeCompleto() != null && funcionario.nomeCompleto() != "") {
+
+		if (funcionario.nomeCompleto() != null && funcionario.nomeCompleto() != "") {
 			this.nomeCompleto = funcionario.nomeCompleto();
 		}
-		
-		if(funcionario.dataNascimento() != null && funcionario.dataNascimento() != "") {
-			
+
+		if (funcionario.dataNascimento() != null && funcionario.dataNascimento() != "") {
+
 			LocalDate dataNascimento = LocalDate.parse(funcionario.dataNascimento(), formatter);
 			this.dataNascimento = dataNascimento;
-			
+
 		}
-		
-		if(funcionario.email() != null && funcionario.email() != "") {
+
+		if (funcionario.email() != null && funcionario.email() != "") {
 			this.email = funcionario.email();
 		}
-		
-		if(funcionario.telefone() != null && funcionario.telefone() != "") {
+
+		if (funcionario.telefone() != null && funcionario.telefone() != "") {
 			this.telefone = funcionario.telefone();
 		}
-		
-		if(funcionario.senha() != null && funcionario.senha() != "") {
+
+		if (funcionario.senha() != null && funcionario.senha() != "") {
 			this.senha = funcionario.senha();
 		}
-		
-		if(funcionario.foto() != null && funcionario.foto() != "") {
+
+		if (funcionario.foto() != null && funcionario.foto() != "") {
 			this.foto = funcionario.foto();
 		}
-		
-		if(funcionario.cargaHorariaDiaria() != null && funcionario.cargaHorariaDiaria() != 0) {
+
+		if (funcionario.cargaHorariaDiaria() != null && funcionario.cargaHorariaDiaria() != 0) {
 			this.cargaHorariaDiaria = funcionario.cargaHorariaDiaria();
 		}
-		
-		if(funcionario.cargaHorariaMensal() != null && funcionario.cargaHorariaMensal() != 0) {
+
+		if (funcionario.cargaHorariaMensal() != null && funcionario.cargaHorariaMensal() != 0) {
 			this.cargaHorariaMensal = funcionario.cargaHorariaMensal();
 		}
-		
-	
-		if(funcionario.horarioEntrada() != null && funcionario.horarioEntrada() != "") {
+
+		if (funcionario.horarioEntrada() != null && funcionario.horarioEntrada() != "") {
 			LocalTime horarioEntrada = LocalTime.parse(funcionario.horarioEntrada());
 			this.horarioEntrada = horarioEntrada;
 		}
-		
-		if(funcionario.horarioIntervaloEntrada() != null && funcionario.horarioIntervaloEntrada() != "") {
+
+		if (funcionario.horarioIntervaloEntrada() != null && funcionario.horarioIntervaloEntrada() != "") {
 			LocalTime horarioIntervaloEntrada = LocalTime.parse(funcionario.horarioIntervaloEntrada());
 			this.horarioIntervaloEntrada = horarioIntervaloEntrada;
 		}
-		
-		if(funcionario.horarioIntervaloSaida() != null && funcionario.horarioIntervaloSaida() != "") {
+
+		if (funcionario.horarioIntervaloSaida() != null && funcionario.horarioIntervaloSaida() != "") {
 			LocalTime horarioIntervaloSaida = LocalTime.parse(funcionario.horarioIntervaloSaida());
 			this.horarioIntervaloSaida = horarioIntervaloSaida;
 		}
-		
-		if(funcionario.horarioSaida() != null && funcionario.horarioSaida() != "") {
+
+		if (funcionario.horarioSaida() != null && funcionario.horarioSaida() != "") {
 			LocalTime horarioSaida = LocalTime.parse(funcionario.horarioSaida());
 			this.horarioSaida = horarioSaida;
 		}
-		
-		if(funcionario.horarioFolgaEntrada() != null && funcionario.horarioFolgaEntrada() != "") {
+
+		if (funcionario.horarioFolgaEntrada() != null && funcionario.horarioFolgaEntrada() != "") {
 			LocalTime horarioFolgaEntrada = LocalTime.parse(funcionario.horarioFolgaEntrada());
 			this.horarioFolgaEntrada = horarioFolgaEntrada;
 		}
-		
-		if(funcionario.horarioFolgaSaida() != null && funcionario.horarioFolgaSaida() != "") {
+
+		if (funcionario.horarioFolgaSaida() != null && funcionario.horarioFolgaSaida() != "") {
 			LocalTime horarioFolgaSaida = LocalTime.parse(funcionario.horarioFolgaSaida());
 			this.horarioFolgaSaida = horarioFolgaSaida;
 		}
-		
-		if(funcionario.diaFolga() != null && funcionario.diaFolga() != "") {
+
+		if (funcionario.diaFolga() != null && funcionario.diaFolga() != "") {
 			this.diaFolga = funcionario.diaFolga();
 		}
-		
-		if(funcionario.quantidadeFaltasJustificadas() != null && funcionario.quantidadeFaltasJustificadas() != 0) {
+
+		if (funcionario.quantidadeFaltasJustificadas() != null && funcionario.quantidadeFaltasJustificadas() != 0) {
 			this.quantidadeFaltasJustificadas = funcionario.quantidadeFaltasJustificadas();
 		}
-		
-		if(funcionario.quantidadeHorasExtras() != null && funcionario.quantidadeHorasExtras() != 0) {
+
+		if (funcionario.quantidadeHorasExtras() != null && funcionario.quantidadeHorasExtras() != 0) {
 			this.quantidadeFaltasJustificadas = funcionario.quantidadeFaltasJustificadas();
 		}
-		
-		if(funcionario.idCargo() != null && funcionario.idCargo() != 0) {
+
+		if (funcionario.idCargo() != null && funcionario.idCargo() != 0) {
 			this.id = funcionario.id();
 		}
-		
+
+	}
+
+	public void toAvailable() {
+
+		this.ativo = true;
+
+	}
+	
+	public void toUnavailable() {
+
+		this.ativo = false;
+
 	}
 
 }
