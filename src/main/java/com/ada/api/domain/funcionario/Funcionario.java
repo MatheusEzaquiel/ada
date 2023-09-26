@@ -4,10 +4,14 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+import com.ada.api.domain.empresa.Empresa;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -49,12 +53,16 @@ public class Funcionario {
 	private Integer quantidadeFaltasJustificadas;
 	private Integer quantidadeHorasExtras;
 	private boolean ativo;
-	private int idEmpresa;
+	
+	@ManyToOne
+	@JoinColumn(name="id_empresa")
+	private Empresa empresa;
+	
 	private int idCargo;
 
+	
 	public Funcionario(CreateFuncionarioDTO data) {
 
-		super();
 		this.cpf = data.cpf();
 		this.login = data.login();
 		this.apelido = "usuário";
@@ -77,10 +85,11 @@ public class Funcionario {
 		this.quantidadeFaltasJustificadas = 0;
 		this.quantidadeHorasExtras = 0;
 		this.ativo = true;
-		this.idEmpresa = data.idEmpresa();
+		this.empresa = data.empresa();
 		this.idCargo = data.idCargo();
 
 	}
+
 
 	public void updateByAdmin(UpdateFuncionarioDTO funcionario) {
 
@@ -115,14 +124,6 @@ public class Funcionario {
 
 		if (funcionario.telefone() != null && funcionario.telefone() != "") {
 			this.telefone = funcionario.telefone();
-		}
-
-		if (funcionario.senha() != null && funcionario.senha() != "") {
-			this.senha = funcionario.senha();
-		}
-
-		if (funcionario.foto() != null && funcionario.foto() != "") {
-			this.foto = funcionario.foto();
 		}
 
 		if (funcionario.cargaHorariaDiaria() != null && funcionario.cargaHorariaDiaria() != 0) {
@@ -193,4 +194,5 @@ public class Funcionario {
 
 	}
 
+	
 }

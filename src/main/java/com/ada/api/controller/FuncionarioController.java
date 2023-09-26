@@ -1,12 +1,10 @@
 package com.ada.api.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.ada.api.domain.empresa.EmpresaRepository;
 import com.ada.api.domain.funcionario.CreateFuncionarioDTO;
 import com.ada.api.domain.funcionario.DetailFuncionarioDTO;
 import com.ada.api.domain.funcionario.Funcionario;
@@ -30,37 +29,80 @@ import jakarta.validation.Valid;
 public class FuncionarioController {
 
 	@Autowired
-	private FuncionarioRepository repository;
+	private FuncionarioRepository funcionarioRepository;
+
+	@Autowired
+	private EmpresaRepository empresaRepository;
 
 	@GetMapping
-	public ResponseEntity<Page<ListFuncionarioDTO>> list(@PageableDefault(size = 10) Pageable paginacao) {
+	public ResponseEntity<List<ListFuncionarioDTO>> list() {
 
-		var page = repository.findAll(paginacao).map(ListFuncionarioDTO::new);
+		try {
 
-		return ResponseEntity.ok(page);
+			List<ListFuncionarioDTO> funcionarios = funcionarioRepository.listAllFuncionarios();
+
+			return ResponseEntity.ok(funcionarios);
+
+		} catch (Exception e) {
+
+			System.out.println(e.getMessage());
+			return ResponseEntity.notFound().build();
+
+		}
 
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity detail(@PathVariable Long id) {
+	@GetMapping("/{funcionarioId}")
+	public ResponseEntity detail(@PathVariable Long funcionarioId) {
+		try {
 
-		var funcionario = repository.getReferenceById(id);
+			DetailFuncionarioDTO funcionarioDTO = funcionarioRepository.listFuncionarioJoinEmpresa(funcionarioId);
 
-		return ResponseEntity.ok(new DetailFuncionarioDTO(funcionario));
+			System.out.println(funcionarioDTO);
 
+			if (funcionarioDTO != null) {
+
+				return ResponseEntity.ok(funcionarioDTO);
+
+			} else {
+
+				return ResponseEntity.notFound().build();
+			}
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return ResponseEntity.internalServerError().body("Erro ao buscar o funcionário");
+		}
 	}
 
 	@PostMapping
-	@Transactional
 	public ResponseEntity create(@RequestBody @Valid CreateFuncionarioDTO data, UriComponentsBuilder uriBuilder) {
 
-		Funcionario funcionario = new Funcionario(data);
+		try {
 
-		repository.save(funcionario);
+			boolean empresaOptional = empresaRepository.existsById((long) data.empresa().getId());
 
-		var uri = uriBuilder.path("/funcionarios/{id}").buildAndExpand(funcionario.getId()).toUri();
+			if (empresaOptional != true) {
 
-		return ResponseEntity.created(uri).body(new DetailFuncionarioDTO(funcionario));
+				return ResponseEntity.notFound().build().ok("A empresa não está cadastrada ou não existe");
+
+			}
+
+			Funcionario funcionario = new Funcionario(data);
+
+			funcionarioRepository.save(funcionario);
+
+			DetailFuncionarioDTO detailFuncionarioDTO = funcionarioRepository
+					.listFuncionarioJoinEmpresa(funcionario.getId());
+
+			var uri = uriBuilder.path("/funcionarios/{id}").buildAndExpand(funcionario.getId()).toUri();
+
+			return ResponseEntity.created(uri).body(detailFuncionarioDTO);
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return ResponseEntity.internalServerError().body("erro");
+		}
 
 	}
 
@@ -68,21 +110,44 @@ public class FuncionarioController {
 	@Transactional
 	public ResponseEntity update(@RequestBody UpdateFuncionarioDTO data) {
 
-		Funcionario funcionario = repository.getReferenceById(data.id());
-		funcionario.updateByAdmin(data);
+		try {
+			
+			boolean funcionarioExiste = funcionarioRepository.existsById(data.id());
+			
+			if(funcionarioExiste != false) {
+				
+				Funcionario funcionario = funcionarioRepository.getReferenceById(data.id());
+				
+				funcionario.updateByAdmin(data);
 
-		return ResponseEntity.ok(new DetailFuncionarioDTO(funcionario));
+				DetailFuncionarioDTO detailFuncionarioDTO = funcionarioRepository.listFuncionarioJoinEmpresa(funcionario.getId());
+
+				return ResponseEntity.ok(detailFuncionarioDTO);
+				
+			}
+			
+			return ResponseEntity.internalServerError().body("Usuário não encontrado");
+
+		} catch (Exception e) {
+			
+			System.out.println(e.getMessage());
+			
+			return ResponseEntity.internalServerError().body("Erro ao atualizar dados do usuário");
+			
+		}
 
 	}
-	
+
 	@PutMapping("/ativar/{id}")
 	@Transactional
 	public ResponseEntity toAvailable(@PathVariable Long id) {
 
-		Funcionario funcionario = repository.getReferenceById(id);
+		Funcionario funcionario = funcionarioRepository.getReferenceById(id);
 		funcionario.toAvailable();
 
-		return ResponseEntity.ok(new DetailFuncionarioDTO(funcionario));
+		DetailFuncionarioDTO detailFuncionarioDTO = funcionarioRepository.listFuncionarioJoinEmpresa(funcionario.getId());
+
+		return ResponseEntity.ok(detailFuncionarioDTO);
 
 	}
 
@@ -90,11 +155,13 @@ public class FuncionarioController {
 	@Transactional
 	public ResponseEntity toUnavailable(@PathVariable Long id) {
 
-		Funcionario funcionario = repository.getReferenceById(id);
+		Funcionario funcionario = funcionarioRepository.getReferenceById(id);
 		funcionario.toUnavailable();
 
-		return ResponseEntity.ok(new DetailFuncionarioDTO(funcionario));
+		DetailFuncionarioDTO detailFuncionarioDTO = funcionarioRepository.listFuncionarioJoinEmpresa(funcionario.getId());
 
+		return ResponseEntity.ok(detailFuncionarioDTO);
+		
 	}
 
 }

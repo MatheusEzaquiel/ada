@@ -3,59 +3,34 @@ package com.ada.api.domain.funcionario;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.ada.api.domain.empresa.Empresa;
+
 public record DetailFuncionarioDTO(
 		Long id,
-		String cpf,
-		String login,
-		String nomeCompleto,
-		LocalDate dataNascimento,
-		String email,
-		String telefone,
-		String senha,
-		String foto,
-		int cargaHorariaDiaria,
-		int cargaHorariaMensal,
-		LocalTime horarioEntrada,
-		LocalTime horarioIntervaloEntrada,
-		LocalTime horarioIntervaloSaida,
-		LocalTime horarioSaida,
-		LocalTime horarioFolgaEntrada,
-		LocalTime horarioFolgaSaida,
-		String diaFolga,
-		int quantidadeFaltas,
-		int quantidadeFaltasJustificadas,
-		int quantidadeHorasExtras,
-		boolean ativo,
-		int idEmpresa,
-		int idCargo) {
-	
-	public DetailFuncionarioDTO(Funcionario funcionario) {
-		this(
-				funcionario.getId(),
-				funcionario.getCpf(),
-				funcionario.getLogin(),
-				funcionario.getNomeCompleto(),
-				funcionario.getDataNascimento(),
-				funcionario.getEmail(),
-				funcionario.getTelefone(),
-				funcionario.getSenha(),
-				funcionario.getFoto(),
-				funcionario.getCargaHorariaDiaria(),
-				funcionario.getCargaHorariaMensal(),
-				funcionario.getHorarioEntrada(),
-				funcionario.getHorarioIntervaloEntrada(),
-				funcionario.getHorarioIntervaloSaida(),
-				funcionario.getHorarioSaida(),
-				funcionario.getHorarioFolgaEntrada(),
-				funcionario.getHorarioFolgaSaida(),
-				funcionario.getDiaFolga(),
-				funcionario.getQuantidadeFaltas(),
-				funcionario.getQuantidadeFaltasJustificadas(),
-				funcionario.getQuantidadeHorasExtras(),
-				funcionario.isAtivo(),
-				funcionario.getIdEmpresa(),
-				funcionario.getIdCargo()
-				);
-	}
+        String cpf,
+        String login,
+        String apelido,
+        String nomeCompleto,
+        LocalDate dataNascimento,
+        String email,
+        String telefone,
+        String senha,
+        String foto,
+        Integer cargaHorariaDiaria,
+        Integer cargaHorariaMensal,
+        LocalTime horarioEntrada,
+        LocalTime horarioIntervaloEntrada,
+        LocalTime horarioIntervaloSaida,
+        LocalTime horarioSaida,
+        LocalTime horarioFolgaEntrada,
+        LocalTime horarioFolgaSaida,
+        String diaFolga,
+        Integer quantidadeFaltas,
+        Integer quantidadeFaltasJustificadas,
+        Integer quantidadeHorasExtras,
+        boolean ativo,
+        Long idEmpresa,
+        String nomeEmpresa,
+        int idCargo) {
 
 }
