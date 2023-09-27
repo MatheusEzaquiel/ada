@@ -54,11 +54,10 @@ public class FuncionarioController {
 
 	@GetMapping("/{funcionarioId}")
 	public ResponseEntity detail(@PathVariable Long funcionarioId) {
+		
 		try {
 
 			DetailFuncionarioDTO funcionarioDTO = funcionarioRepository.listFuncionarioJoinEmpresa(funcionarioId);
-
-			System.out.println(funcionarioDTO);
 
 			if (funcionarioDTO != null) {
 
@@ -73,6 +72,7 @@ public class FuncionarioController {
 			System.out.println(e.getMessage());
 			return ResponseEntity.internalServerError().body("Erro ao buscar o funcionário");
 		}
+		
 	}
 
 	@PostMapping
