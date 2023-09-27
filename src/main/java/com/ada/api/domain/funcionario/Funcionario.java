@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+import com.ada.api.domain.cargo.Cargo;
 import com.ada.api.domain.empresa.Empresa;
 
 import jakarta.persistence.Entity;
@@ -58,7 +59,9 @@ public class Funcionario {
 	@JoinColumn(name="id_empresa")
 	private Empresa empresa;
 	
-	private int idCargo;
+	@ManyToOne
+	@JoinColumn(name="id_cargo")
+	private Cargo cargo;
 
 	
 	public Funcionario(CreateFuncionarioDTO data) {
@@ -86,7 +89,7 @@ public class Funcionario {
 		this.quantidadeHorasExtras = 0;
 		this.ativo = true;
 		this.empresa = data.empresa();
-		this.idCargo = data.idCargo();
+		this.cargo = data.cargo();
 
 	}
 
@@ -175,11 +178,12 @@ public class Funcionario {
 		if (funcionario.quantidadeHorasExtras() != null && funcionario.quantidadeHorasExtras() != 0) {
 			this.quantidadeFaltasJustificadas = funcionario.quantidadeFaltasJustificadas();
 		}
-
+		
+		/*
 		if (funcionario.idCargo() != null && funcionario.idCargo() != 0) {
 			this.id = funcionario.id();
 		}
-
+		*/
 	}
 
 	public void toAvailable() {
