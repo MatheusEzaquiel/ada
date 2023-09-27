@@ -3,6 +3,7 @@ package com.ada.api.domain.funcionario;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.ada.api.domain.cargo.Cargo;
 import com.ada.api.domain.empresa.Empresa;
 
 import jakarta.validation.constraints.Email;
@@ -28,7 +29,7 @@ public record CreateFuncionarioDTO(
 		LocalTime horarioFolgaEntrada,
 		LocalTime horarioFolgaSaida,
 		String diaFolga,
-		int idCargo,
+		Cargo cargo,
 		@NotNull Empresa empresa) {
 
 }

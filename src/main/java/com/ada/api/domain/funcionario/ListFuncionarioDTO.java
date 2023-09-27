@@ -2,6 +2,9 @@ package com.ada.api.domain.funcionario;
 
 import java.time.LocalTime;
 
+import com.ada.api.domain.cargo.CargoDTO;
+import com.ada.api.domain.empresa.EmpresaDTO;
+
 public record ListFuncionarioDTO(
 		
 		Long id,
@@ -18,9 +21,8 @@ public record ListFuncionarioDTO(
         Integer quantidadeFaltas,
         Integer quantidadeFaltasJustificadas,
         Integer quantidadeHorasExtras,
-        Long idEmpresa,
-        String nomeEmpresa,
-        int idCargo
+        EmpresaDTO empresa,
+        CargoDTO cargo
 		
 		) {
 
