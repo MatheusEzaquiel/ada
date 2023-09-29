@@ -3,7 +3,7 @@ package com.ada.api.domain.empresa;
 
 import java.util.List;
 
-import com.ada.api.domain.cargo.Cargo;
+import com.ada.api.domain.administrador.Administrador;
 import com.ada.api.domain.funcionario.Funcionario;
 
 import jakarta.persistence.Entity;
@@ -45,5 +45,8 @@ public class Empresa {
 	
 	@OneToMany(mappedBy = "empresa")
 	private List<Funcionario> funcionarios;
+	
+	@OneToMany(mappedBy = "empresa")
+	private List<Administrador> administradores;
 	
 }
