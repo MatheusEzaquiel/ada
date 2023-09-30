@@ -1,6 +1,7 @@
 CREATE TABLE administradores (
 	id INT PRIMARY KEY IDENTITY(1,1),
 	login VARCHAR(150) NOT NULL UNIQUE,
+	apelido VARCHAR(60),
 	nome_completo VARCHAR(255) NOT NULL,
 	email VARCHAR(150) NOT NULL,
 	telefone VARCHAR(25) NOT NULL,
