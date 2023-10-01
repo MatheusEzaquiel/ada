@@ -44,6 +44,31 @@ public class AdministradorController {
 		}
 
 	}
+
+	@PutMapping
+	@Transactional
+	public ResponseEntity update(@RequestBody UpdateAdministradorDTO data) {
+
+		try {
+
+			if (!repository.existsById(data.id())) return ResponseEntity.badRequest().body("Erro: Não existe um administrador com este ID");
+
+			Administrador admin = repository.getReferenceById(data.id());
+
+			admin.update(data);
+
+			ListAdministradorDTO adminDTO = new ListAdministradorDTO(admin);
+
+			return ResponseEntity.ok().body(adminDTO);
+
+		} catch (Exception e) {
+
+			System.out.println(e);
+
+			return ResponseEntity.badRequest().build();
+		}
+
+	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity listById(@PathVariable Long id) {
