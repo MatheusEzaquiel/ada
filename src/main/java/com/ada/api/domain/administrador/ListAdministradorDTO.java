@@ -1,14 +1,16 @@
 package com.ada.api.domain.administrador;
 
+
+import java.util.Optional;
+
 import com.ada.api.domain.empresa.EmpresaNomeDTO;
 
-public record ListAdministradorDTO(String Login, String apelido, String nomeCompleto, String email, String telefone, String senha, String foto, EmpresaNomeDTO empresa) {
+public record ListAdministradorDTO(Long id, String Login, String apelido, String nomeCompleto, String email, String telefone, String senha, String foto, EmpresaNomeDTO empresa) {
 	
 	public ListAdministradorDTO(Administrador admins) {
 		
-		
-		
 		this(
+				admins.getId(),
 		        admins.getLogin(),
 		        admins.getApelido(),
 		        admins.getNomeCompleto(),
