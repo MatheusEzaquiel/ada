@@ -1,10 +1,10 @@
 package com.ada.api.domain.empresa;
 
-
 import java.util.List;
 
 import com.ada.api.domain.administrador.Administrador;
 import com.ada.api.domain.funcionario.Funcionario;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -46,6 +46,7 @@ public class Empresa {
 	@OneToMany(mappedBy = "empresa")
 	private List<Funcionario> funcionarios;
 	
+	@JsonManagedReference
 	@OneToMany(mappedBy = "empresa")
 	private List<Administrador> administradores;
 	

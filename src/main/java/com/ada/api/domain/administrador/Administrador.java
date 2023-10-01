@@ -37,6 +37,7 @@ public class Administrador {
 	private String foto;
 	private boolean ativo;
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="id_empresa")
 	private Empresa empresa;
