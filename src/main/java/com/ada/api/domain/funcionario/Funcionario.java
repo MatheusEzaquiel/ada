@@ -128,7 +128,7 @@ public class Funcionario {
 		if (funcionario.telefone() != null && funcionario.telefone() != "") {
 			this.telefone = funcionario.telefone();
 		}
-
+		
 		if (funcionario.cargaHorariaDiaria() != null && funcionario.cargaHorariaDiaria() != 0) {
 			this.cargaHorariaDiaria = funcionario.cargaHorariaDiaria();
 		}
@@ -196,6 +196,44 @@ public class Funcionario {
 
 		this.ativo = false;
 
+	}
+
+
+	public void update(BasicUpdateFuncionarioDTO funcionario) {
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+		if (funcionario.id() != null) {
+			this.id = funcionario.id();
+		}
+		
+		if (funcionario.apelido() != null && funcionario.apelido() != "") {
+			this.apelido = funcionario.apelido();
+		}
+		
+		if (funcionario.dataNascimento() != null && funcionario.dataNascimento() != "") {
+
+			LocalDate dataNascimento = LocalDate.parse(funcionario.dataNascimento(), formatter);
+			this.dataNascimento = dataNascimento;
+
+		}
+
+		if (funcionario.email() != null && funcionario.email() != "") {
+			this.email = funcionario.email();
+		}
+
+		if (funcionario.telefone() != null && funcionario.telefone() != "") {
+			this.telefone = funcionario.telefone();
+		}
+		
+		if (funcionario.senha() != null && funcionario.senha() != "") {
+			this.senha = funcionario.senha();
+		}
+		
+		if (funcionario.foto() != null && funcionario.foto() != "") {
+			this.foto = funcionario.foto();
+		}
+		
 	}
 
 	

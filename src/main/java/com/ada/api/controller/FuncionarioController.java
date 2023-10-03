@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.ada.api.domain.empresa.EmpresaRepository;
+import com.ada.api.domain.funcionario.BasicUpdateFuncionarioDTO;
 import com.ada.api.domain.funcionario.CreateFuncionarioDTO;
 import com.ada.api.domain.funcionario.DetailFuncionarioDTO;
 import com.ada.api.domain.funcionario.Funcionario;
@@ -33,7 +34,7 @@ public class FuncionarioController {
 
 	@Autowired
 	private EmpresaRepository empresaRepository;
-
+	
 	@GetMapping
 	public ResponseEntity<List<ListFuncionarioDTO>> list() {
 
@@ -89,7 +90,7 @@ public class FuncionarioController {
 			}
 
 			Funcionario funcionario = new Funcionario(data);
-
+			
 			funcionarioRepository.save(funcionario);
 
 			DetailFuncionarioDTO detailFuncionarioDTO = funcionarioRepository
@@ -119,6 +120,38 @@ public class FuncionarioController {
 				Funcionario funcionario = funcionarioRepository.getReferenceById(data.id());
 				
 				funcionario.updateByAdmin(data);
+
+				DetailFuncionarioDTO detailFuncionarioDTO = funcionarioRepository.listFuncionarioJoinEmpresa(funcionario.getId());
+
+				return ResponseEntity.ok(detailFuncionarioDTO);
+				
+			}
+			
+			return ResponseEntity.internalServerError().body("Usuário não encontrado");
+
+		} catch (Exception e) {
+			
+			System.out.println(e.getMessage());
+			
+			return ResponseEntity.internalServerError().body("Erro ao atualizar dados do usuário");
+			
+		}
+
+	}
+	
+	@PutMapping("/profile/basic-data")
+	@Transactional
+	public ResponseEntity basicUpdate(@RequestBody BasicUpdateFuncionarioDTO data) {
+
+		try {
+			
+			boolean funcionarioExiste = funcionarioRepository.existsById(data.id());
+			
+			if(funcionarioExiste != false) {
+				
+				Funcionario funcionario = funcionarioRepository.getReferenceById(data.id());
+				
+				funcionario.update(data);
 
 				DetailFuncionarioDTO detailFuncionarioDTO = funcionarioRepository.listFuncionarioJoinEmpresa(funcionario.getId());
 
