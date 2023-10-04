@@ -14,8 +14,8 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long>{
 	        "f.foto, f.cargaHorariaDiaria, f.cargaHorariaMensal, " +
 	        "f.horarioEntrada, f.horarioIntervaloEntrada, f.horarioIntervaloSaida, f.horarioSaida, " +
 	        "f.quantidadeFaltas, f.quantidadeFaltasJustificadas, f.quantidadeHorasExtras, " +
-	        "new com.ada.api.domain.empresa.EmpresaDTO(f.empresa.id, f.empresa.nome)," +
-	        "new com.ada.api.domain.cargo.CargoDTO(f.cargo.id, f.cargo.area)) " +
+	        "new com.ada.api.domain.empresa.EmpresaDTO(f.empresa.nome)," +
+	        "new com.ada.api.domain.cargo.CargoDTO(f.cargo.area)) " +
 	        "FROM Funcionario f INNER JOIN f.empresa INNER JOIN f.cargo"
 	        )
 	List<ListFuncionarioDTO>listAllFuncionarios();
@@ -27,8 +27,8 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long>{
 	        "f.horarioEntrada, f.horarioIntervaloEntrada, f.horarioIntervaloSaida, " +
 	        "f.horarioSaida, f.horarioFolgaEntrada, f.horarioFolgaSaida, f.diaFolga, " +
 	        "f.quantidadeFaltas, f.quantidadeFaltasJustificadas, f.quantidadeHorasExtras, f.ativo," +
-	        "new com.ada.api.domain.empresa.EmpresaDTO(f.empresa.id, f.empresa.nome)," +
-	        "new com.ada.api.domain.cargo.CargoDTO(f.cargo.id, f.cargo.area)) " +
+	        "new com.ada.api.domain.empresa.EmpresaDTO(f.empresa.nome)," +
+	        "new com.ada.api.domain.cargo.CargoDTO(f.cargo.area)) " +
 	        "FROM Funcionario f INNER JOIN f.empresa INNER JOIN f.cargo " +
 	        "WHERE f.id = :funcionarioId"
 	        )
