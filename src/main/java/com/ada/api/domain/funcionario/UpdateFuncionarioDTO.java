@@ -1,5 +1,6 @@
 package com.ada.api.domain.funcionario;
 
+import com.ada.api.domain.cargo.CargoDTO;
 
 public record UpdateFuncionarioDTO(
 
@@ -21,7 +22,7 @@ public record UpdateFuncionarioDTO(
 		String diaFolga,
 		Integer quantidadeFaltasJustificadas,
 		Integer quantidadeHorasExtras,
-		Integer idCargo
+		CargoDTO cargo
 
 ) {
 

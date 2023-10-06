@@ -22,8 +22,6 @@ import lombok.Setter;
 
 @Entity(name = "Funcionario")
 @Table(name = "funcionarios")
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -63,6 +61,208 @@ public class Funcionario {
 	@JoinColumn(name="id_cargo")
 	private Cargo cargo;
 
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public String getApelido() {
+		return apelido;
+	}
+
+	public void setApelido(String apelido) {
+		this.apelido = apelido;
+	}
+
+	public String getNomeCompleto() {
+		return nomeCompleto;
+	}
+
+	public void setNomeCompleto(String nomeCompleto) {
+		this.nomeCompleto = nomeCompleto;
+	}
+
+	public LocalDate getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(LocalDate dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
+	public Integer getCargaHorariaDiaria() {
+		return cargaHorariaDiaria;
+	}
+
+	public void setCargaHorariaDiaria(Integer cargaHorariaDiaria) {
+		this.cargaHorariaDiaria = cargaHorariaDiaria;
+	}
+
+	public Integer getCargaHorariaMensal() {
+		return cargaHorariaMensal;
+	}
+
+	public void setCargaHorariaMensal(Integer cargaHorariaMensal) {
+		this.cargaHorariaMensal = cargaHorariaMensal;
+	}
+
+	public LocalTime getHorarioEntrada() {
+		return horarioEntrada;
+	}
+
+	public void setHorarioEntrada(LocalTime horarioEntrada) {
+		this.horarioEntrada = horarioEntrada;
+	}
+
+	public LocalTime getHorarioIntervaloEntrada() {
+		return horarioIntervaloEntrada;
+	}
+
+	public void setHorarioIntervaloEntrada(LocalTime horarioIntervaloEntrada) {
+		this.horarioIntervaloEntrada = horarioIntervaloEntrada;
+	}
+
+	public LocalTime getHorarioIntervaloSaida() {
+		return horarioIntervaloSaida;
+	}
+
+	public void setHorarioIntervaloSaida(LocalTime horarioIntervaloSaida) {
+		this.horarioIntervaloSaida = horarioIntervaloSaida;
+	}
+
+	public LocalTime getHorarioSaida() {
+		return horarioSaida;
+	}
+
+	public void setHorarioSaida(LocalTime horarioSaida) {
+		this.horarioSaida = horarioSaida;
+	}
+
+	public LocalTime getHorarioFolgaEntrada() {
+		return horarioFolgaEntrada;
+	}
+
+	public void setHorarioFolgaEntrada(LocalTime horarioFolgaEntrada) {
+		this.horarioFolgaEntrada = horarioFolgaEntrada;
+	}
+
+	public LocalTime getHorarioFolgaSaida() {
+		return horarioFolgaSaida;
+	}
+
+	public void setHorarioFolgaSaida(LocalTime horarioFolgaSaida) {
+		this.horarioFolgaSaida = horarioFolgaSaida;
+	}
+
+	public String getDiaFolga() {
+		return diaFolga;
+	}
+
+	public void setDiaFolga(String diaFolga) {
+		this.diaFolga = diaFolga;
+	}
+
+	public Integer getQuantidadeFaltas() {
+		return quantidadeFaltas;
+	}
+
+	public void setQuantidadeFaltas(Integer quantidadeFaltas) {
+		this.quantidadeFaltas = quantidadeFaltas;
+	}
+
+	public Integer getQuantidadeFaltasJustificadas() {
+		return quantidadeFaltasJustificadas;
+	}
+
+	public void setQuantidadeFaltasJustificadas(Integer quantidadeFaltasJustificadas) {
+		this.quantidadeFaltasJustificadas = quantidadeFaltasJustificadas;
+	}
+
+	public Integer getQuantidadeHorasExtras() {
+		return quantidadeHorasExtras;
+	}
+
+	public void setQuantidadeHorasExtras(Integer quantidadeHorasExtras) {
+		this.quantidadeHorasExtras = quantidadeHorasExtras;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
+
+	public Cargo getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(Cargo cargo) {
+		this.cargo = cargo;
+	}
+
+	
 	
 	public Funcionario(CreateFuncionarioDTO data) {
 
@@ -235,6 +435,5 @@ public class Funcionario {
 		}
 		
 	}
-
 	
 }
