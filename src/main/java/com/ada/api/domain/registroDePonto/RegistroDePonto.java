@@ -26,7 +26,6 @@ public class RegistroDePonto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private Funcionario funcionario;
 	private LocalDate data;
 	private LocalTime horario_entrada;
 	private LocalTime horaIntervaloEntrada;
@@ -34,5 +33,5 @@ public class RegistroDePonto {
 	private LocalTime horarioSaida;
 	private boolean presencaWifi;
 	private boolean ativo;
-	
+	//private Funcionario funcionario;
 }
