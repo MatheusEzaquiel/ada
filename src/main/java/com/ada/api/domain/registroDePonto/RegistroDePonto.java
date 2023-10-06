@@ -17,10 +17,6 @@ import lombok.Setter;
 
 @Entity(name="RegistroDePonto")
 @Table(name="registro_ponto")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class RegistroDePonto {
 	
 	@Id
@@ -34,4 +30,23 @@ public class RegistroDePonto {
 	private boolean presencaWifi;
 	private boolean ativo;
 	//private Funcionario funcionario;
+	
+	
+	public RegistroDePonto() {}
+	
+	public RegistroDePonto(Long id, LocalDate data, LocalTime horario_entrada, LocalTime horaIntervaloEntrada,
+			LocalTime horarioIntervaloSaida, LocalTime horarioSaida, boolean presencaWifi, boolean ativo) {
+		
+		this.id = id;
+		this.data = data;
+		this.horario_entrada = horario_entrada;
+		this.horaIntervaloEntrada = horaIntervaloEntrada;
+		this.horarioIntervaloSaida = horarioIntervaloSaida;
+		this.horarioSaida = horarioSaida;
+		this.presencaWifi = presencaWifi;
+		this.ativo = ativo;
+		
+	}
+	
+	
 }

@@ -22,8 +22,6 @@ import lombok.Setter;
 
 @Entity(name="Cargo")
 @Table(name="cargos")
-@AllArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Cargo {
 	
@@ -39,6 +37,19 @@ public class Cargo {
 	
 	@OneToMany(mappedBy = "cargo")
 	private List<Funcionario> funcionarios;
+	
+	
+	public Cargo() {}
+	
+	public Cargo(Long id, String area, boolean ativo, Empresa empresa, List<Funcionario> funcionarios) {
+	
+		this.id = id;
+		this.area = area;
+		this.ativo = ativo;
+		this.empresa = empresa;
+		this.funcionarios = funcionarios;
+		
+	}
 
 	public Long getId() {
 		return id;

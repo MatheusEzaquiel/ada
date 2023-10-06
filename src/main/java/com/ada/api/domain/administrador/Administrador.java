@@ -18,8 +18,6 @@ import lombok.Setter;
 
 @Entity(name="Administrador")
 @Table(name="administradores")
-@AllArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Administrador {
 	
@@ -39,6 +37,25 @@ public class Administrador {
 	@ManyToOne
 	@JoinColumn(name="id_empresa")
 	private Empresa empresa;
+	
+	
+	public Administrador() {}
+	
+	public Administrador(Long id, String login, String apelido, String nomeCompleto, String email, String telefone,
+			String senha, String foto, boolean ativo, Empresa empresa) {
+		
+		this.id = id;
+		this.login = login;
+		this.apelido = apelido;
+		this.nomeCompleto = nomeCompleto;
+		this.email = email;
+		this.telefone = telefone;
+		this.senha = senha;
+		this.foto = foto;
+		this.ativo = ativo;
+		this.empresa = empresa;
+		
+	}
 	
 	public Long getId() {
 		return id;
@@ -151,9 +168,5 @@ public class Administrador {
 		}
 
 	}
-
-
-
-	
 	
 }

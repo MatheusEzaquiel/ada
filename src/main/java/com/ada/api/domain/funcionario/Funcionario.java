@@ -22,8 +22,6 @@ import lombok.Setter;
 
 @Entity(name = "Funcionario")
 @Table(name = "funcionarios")
-@AllArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Funcionario {
 
@@ -61,6 +59,43 @@ public class Funcionario {
 	@JoinColumn(name="id_cargo")
 	private Cargo cargo;
 
+	
+	public Funcionario() {}
+	
+	public Funcionario(Long id, String cpf, String login, String apelido, String nomeCompleto, LocalDate dataNascimento,
+			String email, String telefone, String senha, String foto, Integer cargaHorariaDiaria,
+			Integer cargaHorariaMensal, LocalTime horarioEntrada, LocalTime horarioIntervaloEntrada,
+			LocalTime horarioIntervaloSaida, LocalTime horarioSaida, LocalTime horarioFolgaEntrada,
+			LocalTime horarioFolgaSaida, String diaFolga, Integer quantidadeFaltas,
+			Integer quantidadeFaltasJustificadas, Integer quantidadeHorasExtras, boolean ativo, Empresa empresa,
+			Cargo cargo) {
+	
+		this.id = id;
+		this.cpf = cpf;
+		this.login = login;
+		this.apelido = apelido;
+		this.nomeCompleto = nomeCompleto;
+		this.dataNascimento = dataNascimento;
+		this.email = email;
+		this.telefone = telefone;
+		this.senha = senha;
+		this.foto = foto;
+		this.cargaHorariaDiaria = cargaHorariaDiaria;
+		this.cargaHorariaMensal = cargaHorariaMensal;
+		this.horarioEntrada = horarioEntrada;
+		this.horarioIntervaloEntrada = horarioIntervaloEntrada;
+		this.horarioIntervaloSaida = horarioIntervaloSaida;
+		this.horarioSaida = horarioSaida;
+		this.horarioFolgaEntrada = horarioFolgaEntrada;
+		this.horarioFolgaSaida = horarioFolgaSaida;
+		this.diaFolga = diaFolga;
+		this.quantidadeFaltas = quantidadeFaltas;
+		this.quantidadeFaltasJustificadas = quantidadeFaltasJustificadas;
+		this.quantidadeHorasExtras = quantidadeHorasExtras;
+		this.ativo = ativo;
+		this.empresa = empresa;
+		this.cargo = cargo;
+	}
 	
 	public Long getId() {
 		return id;
@@ -293,7 +328,6 @@ public class Funcionario {
 
 	}
 
-
 	public void updateByAdmin(UpdateFuncionarioDTO funcionario) {
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -398,7 +432,6 @@ public class Funcionario {
 
 	}
 
-
 	public void update(BasicUpdateFuncionarioDTO funcionario) {
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -409,6 +442,10 @@ public class Funcionario {
 		
 		if (funcionario.apelido() != null && funcionario.apelido() != "") {
 			this.apelido = funcionario.apelido();
+		}
+		
+		if (funcionario.nomeCompleto() != null && funcionario.nomeCompleto() != "") {
+			this.nomeCompleto = funcionario.nomeCompleto();
 		}
 		
 		if (funcionario.dataNascimento() != null && funcionario.dataNascimento() != "") {

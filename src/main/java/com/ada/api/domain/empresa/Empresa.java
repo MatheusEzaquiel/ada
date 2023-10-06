@@ -20,8 +20,6 @@ import lombok.Setter;
 
 @Entity(name = "Empresa")
 @Table(name = "empresas")
-@AllArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Empresa {
 	
@@ -47,7 +45,30 @@ public class Empresa {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "empresa")
 	private List<Administrador> administradores;
-
+	
+	public Empresa() {}
+	
+	public Empresa(Long id, String cnpj, String nome, String dominio, String area_atuacao, String localizacao,
+			String numero, String rua, String bairro, String cidade, String uf, String pais, boolean ativo,
+			List<Funcionario> funcionarios, List<Administrador> administradores) {
+		super();
+		this.id = id;
+		this.cnpj = cnpj;
+		this.nome = nome;
+		this.dominio = dominio;
+		this.area_atuacao = area_atuacao;
+		this.localizacao = localizacao;
+		this.numero = numero;
+		this.rua = rua;
+		this.bairro = bairro;
+		this.cidade = cidade;
+		this.uf = uf;
+		this.pais = pais;
+		this.ativo = ativo;
+		this.funcionarios = funcionarios;
+		this.administradores = administradores;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -167,5 +188,6 @@ public class Empresa {
 	public void setAdministradores(List<Administrador> administradores) {
 		this.administradores = administradores;
 	}
+
 	
 }
