@@ -1,7 +1,7 @@
 package com.ada.api.domain.funcionario;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,15 +10,15 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long>{
 
 	
 	@Query("SELECT new com.ada.api.domain.funcionario.ListFuncionarioDTO" +
-	        "(f.id, f.login, f.apelido, f.nomeCompleto, " +
-	        "f.foto, f.cargaHorariaDiaria, f.cargaHorariaMensal, " +
-	        "f.horarioEntrada, f.horarioIntervaloEntrada, f.horarioIntervaloSaida, f.horarioSaida, " +
-	        "f.quantidadeFaltas, f.quantidadeFaltasJustificadas, f.quantidadeHorasExtras, " +
-	        "new com.ada.api.domain.empresa.EmpresaDTO(f.empresa.nome)," +
-	        "new com.ada.api.domain.cargo.CargoDTO(f.cargo.area)) " +
-	        "FROM Funcionario f INNER JOIN f.empresa INNER JOIN f.cargo"
-	        )
-	List<ListFuncionarioDTO>listAllFuncionarios();
+		       "(f.id, f.login, f.apelido, f.nomeCompleto, " +
+		       "f.foto, f.cargaHorariaDiaria, f.cargaHorariaMensal, " +
+		       "f.horarioEntrada, f.horarioIntervaloEntrada, f.horarioIntervaloSaida, f.horarioSaida, " +
+		       "f.quantidadeFaltas, f.quantidadeFaltasJustificadas, f.quantidadeHorasExtras, " +
+		       "new com.ada.api.domain.empresa.EmpresaDTO(f.empresa.nome)," +
+		       "new com.ada.api.domain.cargo.CargoDTO(f.cargo.area)) " +
+		       "FROM Funcionario f INNER JOIN f.empresa INNER JOIN f.cargo")
+		Page<ListFuncionarioDTO> listAllFuncionarios(Pageable pageable);
+
 	
 	
 	@Query("SELECT new com.ada.api.domain.funcionario.DetailFuncionarioDTO" +
