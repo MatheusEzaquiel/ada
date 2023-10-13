@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -57,6 +58,20 @@ public class Administrador {
 		
 	}
 	
+	public Administrador(@Valid CreateAdministradorDTO data, String nomeImagem, Empresa empresa) {
+	
+		this.login = data.login();
+		this.apelido = "usuário";
+		this.nomeCompleto = data.nomeCompleto();
+		this.email = data.email();
+		this.telefone = data.telefone();
+		this.senha = data.senha();
+		this.foto = nomeImagem;
+		this.ativo = true;
+		this.empresa = empresa;
+		
+	}
+
 	public Long getId() {
 		return id;
 	}

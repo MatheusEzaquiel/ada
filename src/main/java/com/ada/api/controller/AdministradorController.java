@@ -6,16 +6,24 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ada.api.domain.administrador.Administrador;
 import com.ada.api.domain.administrador.AdministradorRepository;
+import com.ada.api.domain.administrador.CreateAdministradorDTO;
 import com.ada.api.domain.administrador.ListAdministradorDTO;
 import com.ada.api.domain.administrador.UpdateAdministradorDTO;
+import com.ada.api.domain.empresa.Empresa;
+import com.ada.api.service.imagem.HashImage;
+import com.ada.api.service.imagem.ImageService;
 
 import jakarta.transaction.Transactional;
 
@@ -25,15 +33,22 @@ public class AdministradorController {
 
 	@Autowired
 	AdministradorRepository repository;
+	
+	@Autowired
+	ImageService imageService;
+
 
 	@GetMapping
 	public ResponseEntity list() {
 
 		try {
+			
+			List<ListAdministradorDTO> admins = repository.findAll()
+					.stream()
+					.map(admin -> new ListAdministradorDTO(admin, imageService.getImage(admin.getFoto())))
+					.toList();
+			
 
-			List<ListAdministradorDTO> admins = repository.findAll().stream().map(ListAdministradorDTO::new).toList();
-
-			System.out.println(admins);
 			return ResponseEntity.ok(admins);
 
 		} catch (Exception e) {
@@ -44,6 +59,31 @@ public class AdministradorController {
 		}
 
 	}
+	
+	@PostMapping
+	public ResponseEntity create(@ModelAttribute CreateAdministradorDTO data, @RequestParam("foto") MultipartFile foto,
+            @RequestParam("empresa.id") Long empresaId) {
+
+		try {
+
+			Empresa empresa = new Empresa();
+			empresa.setId(empresaId);
+			
+			String imagem = imageService.saveImage(foto);
+			
+			Administrador admin = new Administrador(data, imagem, empresa);
+			
+			repository.save(admin);
+
+			return ResponseEntity.ok().build();
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return ResponseEntity.internalServerError().body("erro");
+		}
+
+	}
+
 
 	@PutMapping
 	@Transactional
@@ -71,7 +111,7 @@ public class AdministradorController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity listById(@PathVariable Long id) {
+	public ResponseEntity detail(@PathVariable Long id) {
 
 		try {
 
@@ -81,7 +121,9 @@ public class AdministradorController {
 				return ResponseEntity.notFound().build();
 			}
 			
-			ListAdministradorDTO adminDTO = new ListAdministradorDTO(adminOptional.get());
+			String linkFoto = imageService.getImage(adminOptional.get().getFoto());
+			
+			ListAdministradorDTO adminDTO = new ListAdministradorDTO(adminOptional.get(), linkFoto);
 			
 			return ResponseEntity.ok().body(adminDTO);
 
