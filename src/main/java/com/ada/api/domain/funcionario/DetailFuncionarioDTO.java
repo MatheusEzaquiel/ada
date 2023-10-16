@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.ada.api.domain.cargo.CargoDTO;
-import com.ada.api.domain.empresa.Empresa;
 import com.ada.api.domain.empresa.EmpresaDTO;
 
 public record DetailFuncionarioDTO(
@@ -35,5 +34,36 @@ public record DetailFuncionarioDTO(
         CargoDTO cargo
         
 		) {
+
+	public DetailFuncionarioDTO(Funcionario f) {
+		this(
+				f.getId(),
+				f.getCpf(),
+				f.getLogin(),
+		        f.getApelido(),
+		        f.getNomeCompleto(),
+		        f.getDataNascimento(),
+		        f.getEmail(),
+		        f.getTelefone(),
+		        f.getSenha(),
+		        f.getFoto(),
+		        f.getCargaHorariaDiaria(),
+		        f.getCargaHorariaMensal(),
+		        f.getHorarioEntrada(),
+		        f.getHorarioIntervaloEntrada(),
+		        f.getHorarioIntervaloSaida(),
+		        f.getHorarioSaida(),
+		        f.getHorarioFolgaEntrada(),
+		        f.getHorarioFolgaSaida(),
+		        f.getDiaFolga(),
+		        f.getQuantidadeFaltas(),
+		        f.getQuantidadeFaltasJustificadas(),
+		        f.getQuantidadeHorasExtras(),
+		        f.isAtivo(),
+		        new  EmpresaDTO(f.getEmpresa().getNome()),
+		        new CargoDTO(f.getCargo().getArea())
+				);
+	}
+
 
 }

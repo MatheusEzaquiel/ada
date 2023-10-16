@@ -14,11 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity(name = "Funcionario")
 @Table(name = "funcionarios")
@@ -299,7 +295,7 @@ public class Funcionario {
 
 	
 	
-	public Funcionario(CreateFuncionarioDTO data) {
+	public Funcionario(CreateFuncionarioDTO data, Cargo cargo, Empresa empresa) {
 
 		this.cpf = data.cpf();
 		this.login = data.login();
@@ -309,7 +305,6 @@ public class Funcionario {
 		this.email = data.email();
 		this.telefone = data.telefone();
 		this.senha = data.senha();
-		this.foto = data.foto();
 		this.cargaHorariaDiaria = data.cargaHorariaDiaria();
 		this.cargaHorariaMensal = data.cargaHorariaMensal();
 		this.horarioEntrada = data.horarioEntrada();
@@ -323,8 +318,8 @@ public class Funcionario {
 		this.quantidadeFaltasJustificadas = 0;
 		this.quantidadeHorasExtras = 0;
 		this.ativo = true;
-		this.empresa = data.empresa();
-		this.cargo = data.cargo();
+		this.empresa = empresa;
+		this.cargo = cargo;
 
 	}
 
