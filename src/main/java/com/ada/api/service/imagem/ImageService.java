@@ -15,10 +15,10 @@ public class ImageService {
 	@Autowired
 	HashImage hashImage;
 
-	Path currentPath = Paths.get(".");
-	Path absolutePath = currentPath.toAbsolutePath();
-	String folderPathImage = "/src/main/resources/static/images";
-	String folderPath;
+	private Path currentPath = Paths.get(".");
+	private Path absolutePath = currentPath.toAbsolutePath();
+	private String folderPathImage = "/src/main/resources/static/images";
+	private String folderPath;
 
 	public String saveImage(MultipartFile imageFile, String typeUser) throws IOException {
 
@@ -32,13 +32,21 @@ public class ImageService {
 		String image = hashImageName + "." + extension;
 		
 		if(typeUser == "admin") {
-			String folderPath = "/admins/";
-		} else {
-			String folderPath = "/funcionarios/";
+			
+			folderPath = "/admins/";
+			
+		} else if(typeUser == "funcionario"){
+			
+			folderPath = "/funcionarios/";
+			
 		}
+		
+		
 
 		Path path = Paths.get(absolutePath + folderPathImage + folderPath + image);
 		Files.write(path, bytes);
+		
+		System.out.println(path);
 
 		return image;
 
