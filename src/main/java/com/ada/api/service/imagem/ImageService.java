@@ -17,9 +17,10 @@ public class ImageService {
 
 	Path currentPath = Paths.get(".");
 	Path absolutePath = currentPath.toAbsolutePath();
-	String folderPath = "/src/main/resources/static/images/admins/";
+	String folderPathImage = "/src/main/resources/static/images";
+	String folderPath;
 
-	public String saveImage(MultipartFile imageFile) throws IOException {
+	public String saveImage(MultipartFile imageFile, String typeUser) throws IOException {
 
 		byte[] bytes = imageFile.getBytes();
 
@@ -29,18 +30,30 @@ public class ImageService {
 		String hashImageName = hashImage.hashFileName(imageName);
 		
 		String image = hashImageName + "." + extension;
+		
+		if(typeUser == "admin") {
+			String folderPath = "/admins/";
+		} else {
+			String folderPath = "/funcionarios/";
+		}
 
-
-		Path path = Paths.get(absolutePath + folderPath + image);
+		Path path = Paths.get(absolutePath + folderPathImage + folderPath + image);
 		Files.write(path, bytes);
 
 		return image;
 
 	}
 
-	public String getImage(String imageName) {
+	public String getImage(String imageName, String typeUser) {
+		
+		if(typeUser == "admin") {
+			folderPath = "/admins/";
+		} else {
+			folderPath = "/funcionarios/";
+		}
 
-		String pathImage = Paths.get(absolutePath + folderPath + imageName).toString();
+
+		String pathImage = Paths.get(absolutePath + folderPathImage + folderPath + imageName).toString();
 
 		return pathImage;
 	}
