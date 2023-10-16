@@ -136,10 +136,11 @@ public class FuncionarioController {
 			funcionario.setLogin(funcionario.getLogin() + dominioEmpresa);
 			funcionario.setFoto(newNameImage);
 			
-			System.out.println(newNameImage);
 			
-			DetailFuncionarioDTO funcionarioCreated = new DetailFuncionarioDTO(funcionarioRepository.save(funcionario));
+			String pathImageSaved = imageService.getImage(newNameImage, "funcionario");
 			
+			DetailFuncionarioDTO funcionarioCreated = new DetailFuncionarioDTO(funcionarioRepository.save(funcionario), pathImageSaved);
+	
 			
 			var uri = uriBuilder.path("/funcionarios/{id}").buildAndExpand(funcionario.getId()).toUri();
 

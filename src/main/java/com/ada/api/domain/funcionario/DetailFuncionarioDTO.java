@@ -35,7 +35,7 @@ public record DetailFuncionarioDTO(
         
 		) {
 
-	public DetailFuncionarioDTO(Funcionario f) {
+	public DetailFuncionarioDTO(Funcionario f, String foto) {
 		this(
 				f.getId(),
 				f.getCpf(),
@@ -46,7 +46,7 @@ public record DetailFuncionarioDTO(
 		        f.getEmail(),
 		        f.getTelefone(),
 		        f.getSenha(),
-		        f.getFoto(),
+		        foto,
 		        f.getCargaHorariaDiaria(),
 		        f.getCargaHorariaMensal(),
 		        f.getHorarioEntrada(),
