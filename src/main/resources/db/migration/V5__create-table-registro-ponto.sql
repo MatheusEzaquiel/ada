@@ -5,7 +5,7 @@ CREATE TABLE registro_ponto (
 	horario_saida DATETIME,
 	horario_intervalo_entrada DATETIME,
 	horario_intervalo_saida DATETIME,
-	presenca_wifi BIT NOT NULL,
+	ssid_atual VARCHAR(150) NOT NULL,
 	ativo BIT DEFAULT 1,
 
 	id_funcionario INT NOT NULL,
