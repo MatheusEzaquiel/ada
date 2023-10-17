@@ -76,9 +76,15 @@ public class AdministradorController {
 			
 			empresa = empresaRepository.getReferenceById(empresaId);
 			
+			String dominioEmpresa = empresa.getDominio();
+			
+			
 			String imagem = imageService.saveImage(foto, "admin");
 			
 			Administrador admin = new Administrador(data, imagem, empresa);
+			
+			
+			admin.setLogin(admin.getLogin() + dominioEmpresa);
 			
 			repository.save(admin);
 			
