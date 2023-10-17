@@ -5,6 +5,7 @@ import java.time.LocalTime;
 
 import com.ada.api.domain.funcionario.Funcionario;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,30 +24,119 @@ public class RegistroDePonto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private LocalDate data;
-	private LocalTime horario_entrada;
-	private LocalTime horaIntervaloEntrada;
+	private LocalTime horarioEntrada;
+	private LocalTime horarioIntervaloEntrada;
 	private LocalTime horarioIntervaloSaida;
 	private LocalTime horarioSaida;
-	private boolean presencaWifi;
+	private String ssidAtual;
 	private boolean ativo;
+	private Long idFuncionario;
 	//private Funcionario funcionario;
 	
 	
 	public RegistroDePonto() {}
+
+	public RegistroDePonto(Long id, LocalDate data, LocalTime horarioEntrada, LocalTime horarioIntervaloEntrada,
+			LocalTime horarioIntervaloSaida, LocalTime horarioSaida, String ssidAtual, boolean ativo) {
 	
-	public RegistroDePonto(Long id, LocalDate data, LocalTime horario_entrada, LocalTime horaIntervaloEntrada,
-			LocalTime horarioIntervaloSaida, LocalTime horarioSaida, boolean presencaWifi, boolean ativo) {
-		
 		this.id = id;
 		this.data = data;
-		this.horario_entrada = horario_entrada;
-		this.horaIntervaloEntrada = horaIntervaloEntrada;
+		this.horarioEntrada = horarioEntrada;
+		this.horarioIntervaloEntrada = horarioIntervaloEntrada;
 		this.horarioIntervaloSaida = horarioIntervaloSaida;
 		this.horarioSaida = horarioSaida;
-		this.presencaWifi = presencaWifi;
+		this.ssidAtual = ssidAtual;
 		this.ativo = ativo;
 		
 	}
+	
+	public RegistroDePonto(CreateRegistroPontoDTO registro) {
+		
+		this.data = LocalDate.now();
+		this.horarioEntrada = LocalTime.parse(registro.horarioEntrada());
+		this.horarioIntervaloEntrada = LocalTime.parse(registro.horarioIntervaloEntrada());
+		this.horarioIntervaloSaida = LocalTime.parse(registro.horarioIntervaloSaida());
+		this.horarioSaida = LocalTime.parse(registro.horarioSaida());
+		this.ssidAtual = registro.ssidAtual();
+		this.ativo = true;
+		this.idFuncionario = registro.idFuncionario();
+		
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public LocalDate getData() {
+		return data;
+	}
+
+	public void setData(LocalDate data) {
+		this.data = data;
+	}
+
+	public LocalTime getHorarioEntrada() {
+		return horarioEntrada;
+	}
+
+	public void setHorarioEntrada(LocalTime horarioEntrada) {
+		this.horarioEntrada = horarioEntrada;
+	}
+
+	public LocalTime getHorarioIntervaloEntrada() {
+		return horarioIntervaloEntrada;
+	}
+
+	public void setHoraIntervaloEntrada(LocalTime horarioIntervaloEntrada) {
+		this.horarioIntervaloEntrada = horarioIntervaloEntrada;
+	}
+
+	public LocalTime getHorarioIntervaloSaida() {
+		return horarioIntervaloSaida;
+	}
+
+	public void setHorarioIntervaloSaida(LocalTime horarioIntervaloSaida) {
+		this.horarioIntervaloSaida = horarioIntervaloSaida;
+	}
+
+	public LocalTime getHorarioSaida() {
+		return horarioSaida;
+	}
+
+	public void setHorarioSaida(LocalTime horarioSaida) {
+		this.horarioSaida = horarioSaida;
+	}
+
+	public String getSsidAtual() {
+		return ssidAtual;
+	}
+
+	public void setSsidAtual(String ssidAtual) {
+		this.ssidAtual = ssidAtual;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
+	
+	/*
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
+	*/
 	
 	
 }
