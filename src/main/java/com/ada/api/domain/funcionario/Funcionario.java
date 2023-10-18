@@ -3,9 +3,11 @@ package com.ada.api.domain.funcionario;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import com.ada.api.domain.cargo.Cargo;
 import com.ada.api.domain.empresa.Empresa;
+import com.ada.api.domain.registroDePonto.RegistroDePonto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,12 +15,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.EqualsAndHashCode;
 
 @Entity(name = "Funcionario")
 @Table(name = "funcionarios")
-@EqualsAndHashCode(of = "id")
 public class Funcionario {
 
 	@Id
@@ -54,6 +55,9 @@ public class Funcionario {
 	@ManyToOne
 	@JoinColumn(name="id_cargo")
 	private Cargo cargo;
+	
+	@OneToMany(mappedBy = "funcionario")
+	private List<RegistroDePonto> registrosDePonto;
 
 	
 	public Funcionario() {}
@@ -64,8 +68,8 @@ public class Funcionario {
 			LocalTime horarioIntervaloSaida, LocalTime horarioSaida, LocalTime horarioFolgaEntrada,
 			LocalTime horarioFolgaSaida, String diaFolga, Integer quantidadeFaltas,
 			Integer quantidadeFaltasJustificadas, Integer quantidadeHorasExtras, boolean ativo, Empresa empresa,
-			Cargo cargo) {
-	
+			Cargo cargo, List<RegistroDePonto> registrosDePonto) {
+		super();
 		this.id = id;
 		this.cpf = cpf;
 		this.login = login;
@@ -91,6 +95,7 @@ public class Funcionario {
 		this.ativo = ativo;
 		this.empresa = empresa;
 		this.cargo = cargo;
+		this.registrosDePonto = registrosDePonto;
 	}
 	
 	public Long getId() {
@@ -293,7 +298,13 @@ public class Funcionario {
 		this.cargo = cargo;
 	}
 
-	
+	public List<RegistroDePonto> getRegistrosDePonto() {
+		return registrosDePonto;
+	}
+
+	public void setRegistrosDePonto(List<RegistroDePonto> registrosDePonto) {
+		this.registrosDePonto = registrosDePonto;
+	}
 	
 	public Funcionario(CreateFuncionarioDTO data, Cargo cargo, Empresa empresa) {
 
