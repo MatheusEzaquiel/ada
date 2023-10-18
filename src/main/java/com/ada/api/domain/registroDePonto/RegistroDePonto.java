@@ -123,9 +123,20 @@ public class RegistroDePonto {
 		return ativo;
 	}
 
-
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
+	}
+
+	public Long getIdFuncionario() {
+		return idFuncionario;
+	}
+
+	public void setIdFuncionario(Long idFuncionario) {
+		this.idFuncionario = idFuncionario;
+	}
+
+	public void setHorarioIntervaloEntrada(LocalTime horarioIntervaloEntrada) {
+		this.horarioIntervaloEntrada = horarioIntervaloEntrada;
 	}
 	
 	/*
