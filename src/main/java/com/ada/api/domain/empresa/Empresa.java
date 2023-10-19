@@ -12,11 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity(name = "Empresa")
 @Table(name = "empresas")
@@ -30,7 +26,7 @@ public class Empresa {
 	private String nome;
 	private String dominio;
 	private String area_atuacao;
-	private String localizacao;
+	private String ssid;
 	private String numero;
 	private String rua;
 	private String bairro;
@@ -38,26 +34,26 @@ public class Empresa {
 	private String uf;
 	private String pais;
 	private boolean ativo;
-	
+
 	@OneToMany(mappedBy = "empresa")
 	private List<Funcionario> funcionarios;
-	
+
 	@JsonManagedReference
 	@OneToMany(mappedBy = "empresa")
 	private List<Administrador> administradores;
 	
 	public Empresa() {}
 	
-	public Empresa(Long id, String cnpj, String nome, String dominio, String area_atuacao, String localizacao,
+	public Empresa(Long id, String cnpj, String nome, String dominio, String area_atuacao, String ssid,
 			String numero, String rua, String bairro, String cidade, String uf, String pais, boolean ativo,
 			List<Funcionario> funcionarios, List<Administrador> administradores) {
-		super();
+		
 		this.id = id;
 		this.cnpj = cnpj;
 		this.nome = nome;
 		this.dominio = dominio;
 		this.area_atuacao = area_atuacao;
-		this.localizacao = localizacao;
+		this.ssid = ssid;
 		this.numero = numero;
 		this.rua = rua;
 		this.bairro = bairro;
@@ -67,6 +63,7 @@ public class Empresa {
 		this.ativo = ativo;
 		this.funcionarios = funcionarios;
 		this.administradores = administradores;
+		
 	}
 	
 	public Long getId() {
@@ -109,12 +106,12 @@ public class Empresa {
 		this.area_atuacao = area_atuacao;
 	}
 
-	public String getLocalizacao() {
-		return localizacao;
+	public String getSsid() {
+		return ssid;
 	}
 
-	public void setLocalizacao(String localizacao) {
-		this.localizacao = localizacao;
+	public void setSsid(String ssid) {
+		this.ssid = ssid;
 	}
 
 	public String getNumero() {

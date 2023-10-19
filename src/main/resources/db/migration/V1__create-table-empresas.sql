@@ -4,7 +4,7 @@ CREATE TABLE empresas (
 	nome VARCHAR(150) NOT NULL,
 	dominio VARCHAR(150) NOT NULL UNIQUE,
 	area_atuacao VARCHAR(200),
-	localizacao VARCHAR(255) NOT NULL,
+	ssid VARCHAR(255) NOT NULL,
 	numero VARCHAR(5),
 	rua VARCHAR(80),
 	bairro VARCHAR(80),

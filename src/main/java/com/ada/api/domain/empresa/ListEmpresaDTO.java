@@ -5,7 +5,7 @@ import java.util.List;
 import com.ada.api.domain.administrador.Administrador;
 import com.ada.api.domain.funcionario.Funcionario;
 
-public record ListEmpresaDTO(Long id, String cnpj, String nome, String dominio, String area_atuacao, String localizacao,
+public record ListEmpresaDTO(Long id, String cnpj, String nome, String dominio, String area_atuacao, String ssid,
 		String numero, String rua, String bairro, String cidade, String uf, String pais, boolean ativo,
 		List<Funcionario> funcionarios, List<Administrador> administradores) {
 
@@ -16,7 +16,7 @@ public record ListEmpresaDTO(Long id, String cnpj, String nome, String dominio, 
 				empresa.getNome(),
 				empresa.getDominio(),
 				empresa.getArea_atuacao(),
-				empresa.getLocalizacao(),
+				empresa.getSsid(),
 				empresa.getNumero(),
 				empresa.getRua(),
 				empresa.getBairro(),
