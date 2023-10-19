@@ -3,6 +3,9 @@ package com.ada.api.domain.registroDePonto;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.ada.api.domain.funcionario.Funcionario;
+import com.ada.api.domain.funcionario.FuncionarioNameDTO;
+
 public record DetailRegistroDePontoDTO(
 		Long id,
 		LocalDate data,
@@ -12,7 +15,7 @@ public record DetailRegistroDePontoDTO(
 		LocalTime horarioSaida,
 		String ssidAtual,
 		boolean ativo,
-		Long idFuncionario) {
+		FuncionarioNameDTO funcionario) {
 
 	public DetailRegistroDePontoDTO (RegistroDePonto registroDePonto){
 		
@@ -25,8 +28,9 @@ public record DetailRegistroDePontoDTO(
 				registroDePonto.getHorarioSaida(),
 				registroDePonto.getSsidAtual(),
 				registroDePonto.isAtivo(),
-				registroDePonto.getIdFuncionario()
+				new FuncionarioNameDTO(registroDePonto.getFuncionario().getNomeCompleto())
 				);
 	}
+
 
 }
