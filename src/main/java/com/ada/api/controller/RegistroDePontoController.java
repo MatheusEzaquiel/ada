@@ -3,6 +3,8 @@ package com.ada.api.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,31 +31,44 @@ public class RegistroDePontoController {
 	private FuncionarioRepository funcionarioRepository;
 	
 	@GetMapping
-	public List<ListRegistroPontoDTO> list() {
+	public ResponseEntity list() {
 		
 		List<ListRegistroPontoDTO> registrosDePonto = registroRepository.findAll().stream().map(ListRegistroPontoDTO::new).toList();
 		
-		return registrosDePonto;
+		return ResponseEntity.status(HttpStatus.OK).body(registrosDePonto);
 		
 	}
 	
 	@GetMapping("/{id}")
-	public DetailRegistroDePontoDTO detail(@PathVariable Long id) {
+	public ResponseEntity detail(@PathVariable Long id) {
 		
 		DetailRegistroDePontoDTO registroDePonto = new DetailRegistroDePontoDTO(registroRepository.getReferenceById(id));
 		
-		return registroDePonto;
+		if(registroDePonto == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Este registro de ponto não existe");
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK).body(registroDePonto);
 		
 	}
 	
 	@PostMapping
-	public DetailRegistroDePontoDTO create(@RequestBody CreateRegistroPontoDTO data) {
+	public ResponseEntity create(@RequestBody CreateRegistroPontoDTO data) {
+		
+		Funcionario funcionario = funcionarioRepository.getReferenceById(data.funcionario().getId());
+		
+		if( funcionario == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Funcionário não existe");
+		}
+		
 		
 		RegistroDePonto registroDePontoCreated = registroRepository.save(new RegistroDePonto(data));
 		
+		registroDePontoCreated.setFuncionario(funcionario);
+		
 		DetailRegistroDePontoDTO registroDePonto = new DetailRegistroDePontoDTO(registroDePontoCreated);
 		
-		return registroDePonto;
+		return ResponseEntity.status(HttpStatus.CREATED).body(registroDePonto);
 		
 	}
 	
