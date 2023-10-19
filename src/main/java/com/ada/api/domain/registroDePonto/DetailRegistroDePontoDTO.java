@@ -29,7 +29,7 @@ public record DetailRegistroDePontoDTO(
 				registroDePonto.getSsidAtual(),
 				registroDePonto.isAtivo(),
 				new FuncionarioNameDTO(registroDePonto.getFuncionario().getNomeCompleto())
-				);
+		);
 	}
 
 
