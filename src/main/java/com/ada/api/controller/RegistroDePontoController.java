@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ada.api.domain.funcionario.Funcionario;
+import com.ada.api.domain.funcionario.FuncionarioRepository;
 import com.ada.api.domain.registroDePonto.CreateRegistroPontoDTO;
 import com.ada.api.domain.registroDePonto.DetailRegistroDePontoDTO;
 import com.ada.api.domain.registroDePonto.ListRegistroPontoDTO;
@@ -22,6 +24,9 @@ public class RegistroDePontoController {
 	
 	@Autowired
 	private RegistroDePontoRepository registroRepository;
+	
+	@Autowired
+	private FuncionarioRepository funcionarioRepository;
 	
 	@GetMapping
 	public List<ListRegistroPontoDTO> list() {
@@ -44,9 +49,9 @@ public class RegistroDePontoController {
 	@PostMapping
 	public DetailRegistroDePontoDTO create(@RequestBody CreateRegistroPontoDTO data) {
 		
-		RegistroDePonto registroDePontoData = registroRepository.save(new RegistroDePonto(data));
+		RegistroDePonto registroDePontoCreated = registroRepository.save(new RegistroDePonto(data));
 		
-		DetailRegistroDePontoDTO registroDePonto = new DetailRegistroDePontoDTO(registroDePontoData);
+		DetailRegistroDePontoDTO registroDePonto = new DetailRegistroDePontoDTO(registroDePontoCreated);
 		
 		return registroDePonto;
 		

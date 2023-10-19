@@ -10,6 +10,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,8 +32,10 @@ public class RegistroDePonto {
 	private LocalTime horarioSaida;
 	private String ssidAtual;
 	private boolean ativo;
-	private Long idFuncionario;
-	//private Funcionario funcionario;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_funcionario")
+	private Funcionario funcionario;
 	
 	
 	public RegistroDePonto() {}
@@ -59,7 +63,8 @@ public class RegistroDePonto {
 		this.horarioSaida = LocalTime.parse(registro.horarioSaida());
 		this.ssidAtual = registro.ssidAtual();
 		this.ativo = true;
-		this.idFuncionario = registro.idFuncionario();
+		//this.idFuncionario = registro.idFuncionario();
+		this.funcionario = registro.funcionario();
 		
 	}
 
@@ -126,7 +131,7 @@ public class RegistroDePonto {
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
 	}
-
+	/*
 	public Long getIdFuncionario() {
 		return idFuncionario;
 	}
@@ -134,12 +139,12 @@ public class RegistroDePonto {
 	public void setIdFuncionario(Long idFuncionario) {
 		this.idFuncionario = idFuncionario;
 	}
-
+*/
 	public void setHorarioIntervaloEntrada(LocalTime horarioIntervaloEntrada) {
 		this.horarioIntervaloEntrada = horarioIntervaloEntrada;
 	}
 	
-	/*
+	
 	public Funcionario getFuncionario() {
 		return funcionario;
 	}
@@ -147,7 +152,7 @@ public class RegistroDePonto {
 	public void setFuncionario(Funcionario funcionario) {
 		this.funcionario = funcionario;
 	}
-	*/
+	
 	
 	
 }
