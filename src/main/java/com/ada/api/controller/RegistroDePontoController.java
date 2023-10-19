@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ada.api.domain.empresa.Empresa;
+import com.ada.api.domain.empresa.EmpresaRepository;
 import com.ada.api.domain.funcionario.Funcionario;
 import com.ada.api.domain.funcionario.FuncionarioRepository;
 import com.ada.api.domain.registroDePonto.CreateRegistroPontoDTO;
@@ -29,6 +31,9 @@ public class RegistroDePontoController {
 	
 	@Autowired
 	private FuncionarioRepository funcionarioRepository;
+	
+	@Autowired
+	private EmpresaRepository empresaRepository;
 	
 	@GetMapping
 	public ResponseEntity list() {
@@ -61,6 +66,11 @@ public class RegistroDePontoController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Funcionário não existe");
 		}
 		
+		Empresa empresa = empresaRepository.getReferenceById(funcionario.getEmpresa().getId());
+
+		if(!empresa.getSsid().equals(data.ssidAtual())) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Funcionário não está conectado na rede wi-fi da empresa");
+		}
 		
 		RegistroDePonto registroDePontoCreated = registroRepository.save(new RegistroDePonto(data));
 		
