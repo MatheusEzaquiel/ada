@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.ada.api.domain.empresa.Empresa;
 import com.ada.api.domain.empresa.EmpresaRepository;
@@ -58,7 +59,7 @@ public class RegistroDePontoController {
 	}
 	
 	@PostMapping
-	public ResponseEntity create(@RequestBody CreateRegistroPontoDTO data) {
+	public ResponseEntity create(@RequestBody CreateRegistroPontoDTO data, UriComponentsBuilder uriBuilder) {
 		
 		Funcionario funcionario = funcionarioRepository.getReferenceById(data.funcionario().getId());
 		
@@ -78,10 +79,10 @@ public class RegistroDePontoController {
 		
 		DetailRegistroDePontoDTO registroDePonto = new DetailRegistroDePontoDTO(registroDePontoCreated);
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(registroDePonto);
+		var uri = uriBuilder.path("/registro-ponto/{id}").buildAndExpand(registroDePonto.id()).toUri();
+
+		return ResponseEntity.created(uri).body(registroDePonto);
 		
 	}
-	
-	
-	
+
 }
