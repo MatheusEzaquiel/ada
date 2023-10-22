@@ -1,8 +1,11 @@
 package com.ada.api.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,11 +30,14 @@ import com.ada.api.domain.funcionario.DetailFuncionarioDTO;
 import com.ada.api.domain.funcionario.Funcionario;
 import com.ada.api.domain.funcionario.FuncionarioRepository;
 import com.ada.api.domain.funcionario.ListFuncionarioDTO;
+import com.ada.api.domain.funcionario.ReportFuncionarioDTO;
+import com.ada.api.domain.funcionario.ReportOneFuncionarioDTO;
 import com.ada.api.domain.funcionario.UpdateFuncionarioDTO;
+import com.ada.api.domain.registroDePonto.RegistroDePontoRepository;
+import com.ada.api.domain.registroDePonto.ReportRegistroDePontoDTO;
 import com.ada.api.service.imagem.ImageService;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/funcionarios")
@@ -48,6 +54,9 @@ public class FuncionarioController {
 	
 	@Autowired
 	private CargoRepository cargoRepository;
+	
+	@Autowired
+	private RegistroDePontoRepository registroRepository;
 
 	@GetMapping
 	public ResponseEntity list(Pageable pageable) {
@@ -101,16 +110,6 @@ public class FuncionarioController {
 			UriComponentsBuilder uriBuilder) {
 
 		try {
-			
-			/*
-			boolean empresaOptional = empresaRepository.existsById((long) data.empresa().getId());
-
-			if (empresaOptional != true) {
-
-				return ResponseEntity.notFound().build().ok("A empresa não está cadastrada ou não existe");
-
-			}
-			*/
 
 			Empresa empresa = empresaRepository.getReferenceById(empresaId);
 			Cargo cargo = cargoRepository.getReferenceById(cargoId);
@@ -244,6 +243,22 @@ public class FuncionarioController {
 
 		return ResponseEntity.ok(detailFuncionarioDTO);
 
+	}
+	
+	@GetMapping("/relatorios/{id}")
+	public ResponseEntity report(@PathVariable Long id) {
+		
+		Funcionario funcionario = funcionarioRepository.getReferenceById(id);
+		
+		ReportFuncionarioDTO funcionarioReport = funcionarioRepository.reportFuncionarioById(id);
+		
+		List<ReportRegistroDePontoDTO> registrosDePonto = funcionarioRepository.getRegistrosDePonto(id);
+		
+		ReportOneFuncionarioDTO report = new ReportOneFuncionarioDTO(funcionarioReport, registrosDePonto);
+		
+		
+		return ResponseEntity.status(HttpStatus.OK).body(report);
+		
 	}
 
 }
