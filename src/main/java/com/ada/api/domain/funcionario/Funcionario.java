@@ -334,16 +334,12 @@ public class Funcionario {
 
 	}
 
-	public void updateByAdmin(UpdateFuncionarioDTO funcionario) {
+	public void updateByAdmin(UpdateFuncionarioDTO funcionario, Cargo novoCargo) {
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-		if (funcionario.id() != null) {
-			this.id = funcionario.id();
-		}
-
 		if (funcionario.cpf() != null && funcionario.cpf() != "") {
-			this.id = funcionario.id();
+			this.cpf = funcionario.cpf();
 		}
 
 		if (funcionario.login() != null && funcionario.login() != "") {
@@ -419,11 +415,10 @@ public class Funcionario {
 			this.quantidadeFaltasJustificadas = funcionario.quantidadeFaltasJustificadas();
 		}
 		
-		/*
-		if (funcionario.idCargo() != null && funcionario.idCargo() != 0) {
-			this.id = funcionario.id();
+		if (novoCargo != null) {
+			this.cargo = novoCargo;
 		}
-		*/
+		
 	}
 
 	public void toAvailable() {
