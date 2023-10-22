@@ -152,19 +152,26 @@ public class FuncionarioController {
 
 	}
 
-	@PutMapping
+	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity update(@RequestBody UpdateFuncionarioDTO data) {
+	public ResponseEntity update(@RequestBody UpdateFuncionarioDTO data, @PathVariable Long id) {
 
 		try {
 
-			boolean funcionarioExiste = funcionarioRepository.existsById(data.id());
+			boolean funcionarioExiste = funcionarioRepository.existsById(id);
 
 			if (funcionarioExiste != false) {
 
-				Funcionario funcionario = funcionarioRepository.getReferenceById(data.id());
-
-				funcionario.updateByAdmin(data);
+				Funcionario funcionario = funcionarioRepository.getReferenceById(id);
+				
+				Cargo novoCargo = null;
+				
+				if (data.cargo() != null) {
+					System.out.println(data.cargo().id());
+					novoCargo = cargoRepository.getReferenceById(data.cargo().id());
+				}
+				
+				funcionario.updateByAdmin(data, novoCargo);
 
 				DetailFuncionarioDTO detailFuncionarioDTO = funcionarioRepository
 						.listFuncionarioJoinEmpresa(funcionario.getId());
