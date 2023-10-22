@@ -192,16 +192,17 @@ public class FuncionarioController {
 
 	}
 
-	@PutMapping("/profile/basic-data")
-	public ResponseEntity basicUpdate(@RequestBody BasicUpdateFuncionarioDTO data) {
+	@PutMapping("/profile/basic-data/{id}")
+	@Transactional
+	public ResponseEntity basicUpdate(@RequestBody BasicUpdateFuncionarioDTO data, @PathVariable Long id) {
 
 		try {
 
-			boolean funcionarioExiste = funcionarioRepository.existsById(data.id());
+			boolean funcionarioExiste = funcionarioRepository.existsById(id);
 
 			if (funcionarioExiste != false) {
 
-				Funcionario funcionario = funcionarioRepository.getReferenceById(data.id());
+				Funcionario funcionario = funcionarioRepository.getReferenceById(id);
 
 				funcionario.update(data);
 
