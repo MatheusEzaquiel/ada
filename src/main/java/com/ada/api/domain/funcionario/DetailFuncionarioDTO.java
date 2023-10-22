@@ -60,8 +60,8 @@ public record DetailFuncionarioDTO(
 		        f.getQuantidadeFaltasJustificadas(),
 		        f.getQuantidadeHorasExtras(),
 		        f.isAtivo(),
-		        new  EmpresaDTO(f.getEmpresa().getNome()),
-		        new CargoDTO(f.getCargo().getArea())
+		        new  EmpresaDTO(f.getEmpresa().getId(), f.getEmpresa().getNome()),
+		        new CargoDTO(f.getCargo().getId(), f.getCargo().getArea())
 				);
 	}
 
