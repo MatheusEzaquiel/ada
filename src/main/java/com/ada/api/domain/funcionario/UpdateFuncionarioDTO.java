@@ -4,7 +4,6 @@ import com.ada.api.domain.cargo.CargoDTO;
 
 public record UpdateFuncionarioDTO(
 
-		Long id,
 		String cpf,
 		String login,
 		String nomeCompleto,
