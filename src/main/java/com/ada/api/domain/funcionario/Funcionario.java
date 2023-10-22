@@ -436,10 +436,6 @@ public class Funcionario {
 	public void update(BasicUpdateFuncionarioDTO funcionario) {
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-		if (funcionario.id() != null) {
-			this.id = funcionario.id();
-		}
 		
 		if (funcionario.apelido() != null && funcionario.apelido() != "") {
 			this.apelido = funcionario.apelido();
