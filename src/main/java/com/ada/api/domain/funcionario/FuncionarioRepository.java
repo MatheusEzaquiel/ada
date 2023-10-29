@@ -1,12 +1,14 @@
 package com.ada.api.domain.funcionario;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.ada.api.domain.registroDePonto.ReportRegistroDePontoDTO;
 
@@ -36,7 +38,7 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long>{
 	        "FROM Funcionario f INNER JOIN f.empresa INNER JOIN f.cargo " +
 	        "WHERE f.id = :funcionarioId"
 	        )
-	DetailFuncionarioDTO listFuncionarioJoinEmpresa(@Param("funcionarioId") Long funcionarioId);
+	DetailFuncionarioDTO listFuncionarioJoinEmpresa(@Param("funcionarioId") UUID funcionarioId);
 	
 	
 	@Query("SELECT new com.ada.api.domain.funcionario.ReportFuncionarioDTO(f.id, f.cpf, f.login, f.nomeCompleto,"
@@ -50,10 +52,14 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long>{
 	        + " INNER JOIN f.cargo"
 			+ " WHERE f.id = :funcionarioId"
 			)
-	ReportFuncionarioDTO reportFuncionarioById(@Param("funcionarioId") Long funcionarioId);
+	ReportFuncionarioDTO reportFuncionarioById(@Param("funcionarioId") UUID funcionarioId);
 	
 	@Query("SELECT new com.ada.api.domain.registroDePonto.ReportRegistroDePontoDTO("
 			+ "rp.id, rp.data, rp.horarioEntrada, rp.horarioIntervaloEntrada, rp.horarioIntervaloSaida, rp.horarioSaida)"
 	        + " FROM RegistroDePonto rp WHERE rp.funcionario.id = :funcionarioId")
-	List<ReportRegistroDePontoDTO> getRegistrosDePonto(@Param("funcionarioId") Long funcionarioId);
+	List<ReportRegistroDePontoDTO> getRegistrosDePonto(@Param("funcionarioId") UUID funcionarioId);
+
+	UserDetails findByLogin(String login);
+	
+	Funcionario getReferenceById(UUID id);
 }
