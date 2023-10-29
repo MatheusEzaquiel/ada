@@ -1,12 +1,14 @@
 package com.ada.api.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -78,7 +80,7 @@ public class FuncionarioController {
 	}
 
 	@GetMapping("/{funcionarioId}")
-	public ResponseEntity detail(@PathVariable Long funcionarioId) {
+	public ResponseEntity detail(@PathVariable UUID funcionarioId) {
 
 		try {
 
@@ -110,7 +112,14 @@ public class FuncionarioController {
 			UriComponentsBuilder uriBuilder) {
 
 		try {
+			
+			
+			if(funcionarioRepository.findByLogin(data.login()) != null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário já existente, tente outro login");
 
+	        String encryptedPassword = new BCryptPasswordEncoder().encode(data.senha());
+	        
+	        empresaId = (long) 1;
+	        
 			Empresa empresa = empresaRepository.getReferenceById(empresaId);
 			Cargo cargo = cargoRepository.getReferenceById(cargoId);
 			
@@ -122,47 +131,52 @@ public class FuncionarioController {
 				return ResponseEntity.notFound().build().ok("O cargo mencionado não existe nesta empresa");
 			}
 			
-			System.out.println(empresa.getNome());
-			System.out.println(cargo.getArea());
-			
 			String dominioEmpresa = empresa.getDominio();
 	
-			Funcionario funcionario = new Funcionario(data, cargo, empresa);
+			Funcionario funcionario = new Funcionario(data, encryptedPassword, cargo, empresa);
+			
+			
+			funcionario.setLogin(funcionario.getLogin() + dominioEmpresa);
 			
 
 			String newNameImage = imageService.saveImage(foto, "funcionario");
-
-			funcionario.setLogin(funcionario.getLogin() + dominioEmpresa);
-			funcionario.setFoto(newNameImage);
 			
+			funcionario.setFoto(newNameImage);
 			
 			String pathImageSaved = imageService.getImage(newNameImage, "funcionario");
 			
-			DetailFuncionarioDTO funcionarioCreated = new DetailFuncionarioDTO(funcionarioRepository.save(funcionario), pathImageSaved);
-	
 			
+			
+			
+			DetailFuncionarioDTO funcionarioCreated = new DetailFuncionarioDTO(funcionarioRepository.save(funcionario), pathImageSaved);
+			
+			System.out.println(funcionarioCreated.senha());
+			
+			/*
 			var uri = uriBuilder.path("/funcionarios/{id}").buildAndExpand(funcionario.getId()).toUri();
 
 			return ResponseEntity.created(uri).body(funcionarioCreated);
+			
+			*/
+			
+			return ResponseEntity.ok(funcionarioCreated);
 
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return ResponseEntity.internalServerError().body("Erro");
+			return ResponseEntity.internalServerError().body("Erro: " + e.getMessage());
 		}
 
 	}
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity update(@RequestBody UpdateFuncionarioDTO data, @PathVariable Long id) {
+	public ResponseEntity update(@RequestBody UpdateFuncionarioDTO data, @PathVariable UUID id) {
 
 		try {
 
-			boolean funcionarioExiste = funcionarioRepository.existsById(id);
-
-			if (funcionarioExiste != false) {
-
 				Funcionario funcionario = funcionarioRepository.getReferenceById(id);
+				
+				if(funcionario == null) return ResponseEntity.internalServerError().body("Usuário não encontrado");
+				
 				
 				Cargo novoCargo = null;
 				
@@ -176,11 +190,8 @@ public class FuncionarioController {
 				DetailFuncionarioDTO detailFuncionarioDTO = funcionarioRepository
 						.listFuncionarioJoinEmpresa(funcionario.getId());
 
-				return ResponseEntity.ok(detailFuncionarioDTO);
+				return ResponseEntity.status(HttpStatus.OK).body(detailFuncionarioDTO);
 
-			}
-
-			return ResponseEntity.internalServerError().body("Usuário não encontrado");
 
 		} catch (Exception e) {
 
@@ -194,30 +205,23 @@ public class FuncionarioController {
 
 	@PutMapping("/profile/basic-data/{id}")
 	@Transactional
-	public ResponseEntity basicUpdate(@RequestBody BasicUpdateFuncionarioDTO data, @PathVariable Long id) {
+	public ResponseEntity basicUpdate(@RequestBody BasicUpdateFuncionarioDTO data, @PathVariable UUID id) {
 
 		try {
 
-			boolean funcionarioExiste = funcionarioRepository.existsById(id);
-
-			if (funcionarioExiste != false) {
-
-				Funcionario funcionario = funcionarioRepository.getReferenceById(id);
+			Funcionario funcionario = funcionarioRepository.getReferenceById(id);
+			
+			if(funcionario == null) return ResponseEntity.internalServerError().body("Usuário não encontrado");
 
 				funcionario.update(data);
 
 				DetailFuncionarioDTO detailFuncionarioDTO = funcionarioRepository
 						.listFuncionarioJoinEmpresa(funcionario.getId());
 
-				return ResponseEntity.ok(detailFuncionarioDTO);
+				return ResponseEntity.status(HttpStatus.OK).body(detailFuncionarioDTO);
 
-			}
-
-			return ResponseEntity.internalServerError().body("Usuário não encontrado");
 
 		} catch (Exception e) {
-
-			System.out.println(e.getMessage());
 
 			return ResponseEntity.internalServerError().body("Erro ao atualizar dados do usuário");
 
@@ -227,7 +231,7 @@ public class FuncionarioController {
 
 	@PutMapping("/ativar/{id}")
 	@Transactional
-	public ResponseEntity toAvailable(@PathVariable Long id) {
+	public ResponseEntity toAvailable(@PathVariable UUID id) {
 
 		Funcionario funcionario = funcionarioRepository.getReferenceById(id);
 		funcionario.toAvailable();
@@ -241,7 +245,7 @@ public class FuncionarioController {
 
 	@DeleteMapping("/desativar/{id}")
 	@Transactional
-	public ResponseEntity toUnavailable(@PathVariable Long id) {
+	public ResponseEntity toUnavailable(@PathVariable UUID id) {
 
 		Funcionario funcionario = funcionarioRepository.getReferenceById(id);
 		funcionario.toUnavailable();
@@ -254,7 +258,7 @@ public class FuncionarioController {
 	}
 	
 	@GetMapping("/relatorios/{id}")
-	public ResponseEntity report(@PathVariable Long id) {
+	public ResponseEntity report(@PathVariable UUID id) {
 		
 		Funcionario funcionario = funcionarioRepository.getReferenceById(id);
 		

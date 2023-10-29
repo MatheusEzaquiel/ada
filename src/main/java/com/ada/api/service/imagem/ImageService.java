@@ -41,12 +41,8 @@ public class ImageService {
 			
 		}
 		
-		
-
 		Path path = Paths.get(absolutePath + folderPathImage + folderPath + image);
 		Files.write(path, bytes);
-		
-		System.out.println(path);
 
 		return image;
 

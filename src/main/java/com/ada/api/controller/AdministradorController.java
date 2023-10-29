@@ -3,9 +3,11 @@ package com.ada.api.controller;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,10 +36,10 @@ import jakarta.transaction.Transactional;
 public class AdministradorController {
 
 	@Autowired
-	AdministradorRepository repository;
+	AdministradorRepository adminRepos;
 	
 	@Autowired
-	EmpresaRepository empresaRepository;
+	EmpresaRepository empresaRepos;
 	
 	@Autowired
 	ImageService imageService;
@@ -48,7 +50,7 @@ public class AdministradorController {
 
 		try {
 			
-			List<ListAdministradorDTO> admins = repository.findAll()
+			List<ListAdministradorDTO> admins = adminRepos.findAll()
 					.stream()
 					.map(admin -> new ListAdministradorDTO(admin, imageService.getImage(admin.getFoto(), "admin")))
 					.toList();
@@ -70,54 +72,52 @@ public class AdministradorController {
             @RequestParam("empresa.id") Long empresaId, UriComponentsBuilder uriBuilder) {
 
 		try {
+			
+			String encryptedPassword = new BCryptPasswordEncoder().encode(data.senha());
 
 			Empresa empresa = new Empresa();
 			empresa.setId(empresaId);
 			
-			empresa = empresaRepository.getReferenceById(empresaId);
+			empresa = empresaRepos.getReferenceById(empresaId);
+			
 			
 			String dominioEmpresa = empresa.getDominio();
 			
 			
 			String imagem = imageService.saveImage(foto, "admin");
 			
-			Administrador admin = new Administrador(data, imagem, empresa);
+			Administrador admin = new Administrador(data, encryptedPassword, imagem, empresa);
 			
 			
 			admin.setLogin(admin.getLogin() + dominioEmpresa);
 			
-			repository.save(admin);
+			Administrador adminCreated = adminRepos.save(admin);
 			
-			
-			Administrador adminQuery = repository.getReferenceById(admin.getId());
-			
-			System.out.println(adminQuery.getEmpresa().getId());
-			
-			ListAdministradorDTO adminDTO = new ListAdministradorDTO(adminQuery, imageService.getImage(adminQuery.getFoto(), "admin"));
+			ListAdministradorDTO adminDTO = new ListAdministradorDTO(adminCreated, imageService.getImage(adminCreated.getFoto(), "admin"));
 			
 			URI uri = uriBuilder.path("/administradores/{id}").buildAndExpand(adminDTO.id()).toUri();
-
+			
 			return ResponseEntity.created(uri).body(adminDTO);
 
 		} catch (Exception e) {
 			
 			System.out.println(e.getMessage());
-			return ResponseEntity.internalServerError().body("erro");
+			return ResponseEntity.internalServerError().body("Erro:" + e.getMessage());
 			
 		}
 
 	}
 
 
-	@PutMapping
+	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity update(@RequestBody UpdateAdministradorDTO data) {
+	public ResponseEntity update(@RequestBody UpdateAdministradorDTO data, @PathVariable UUID id) {
 
 		try {
 
-			if (!repository.existsById(data.id())) return ResponseEntity.badRequest().body("Erro: Não existe um administrador com este ID");
-
-			Administrador admin = repository.getReferenceById(data.id());
+			Administrador admin = adminRepos.getReferenceById(id);
+			
+			if (admin == null) return ResponseEntity.badRequest().body("Erro: Não existe um administrador com este ID");
 
 			admin.update(data);
 
@@ -135,11 +135,11 @@ public class AdministradorController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity detail(@PathVariable Long id) {
+	public ResponseEntity detail(@PathVariable UUID id) {
 
 		try {
 
-			Optional<Administrador> adminOptional = repository.findById(id);
+			Optional<Administrador> adminOptional = adminRepos.findById(id);
 			
 			if(adminOptional == null) {
 				return ResponseEntity.notFound().build();

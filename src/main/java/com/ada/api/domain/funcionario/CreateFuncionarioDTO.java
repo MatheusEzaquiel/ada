@@ -3,10 +3,7 @@ package com.ada.api.domain.funcionario;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import org.springframework.web.multipart.MultipartFile;
-
-import com.ada.api.domain.cargo.Cargo;
-import com.ada.api.domain.empresa.Empresa;
+import com.ada.api.domain.person.UserRole;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -29,7 +26,8 @@ public record CreateFuncionarioDTO(
 		@NotNull LocalTime horarioSaida,
 		LocalTime horarioFolgaEntrada,
 		LocalTime horarioFolgaSaida,
-		String diaFolga
+		String diaFolga,
+		UserRole role
 		
 		) {
 
