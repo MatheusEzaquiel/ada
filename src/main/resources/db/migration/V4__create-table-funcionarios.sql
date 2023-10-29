@@ -1,5 +1,5 @@
 CREATE TABLE funcionarios (
-	id INT PRIMARY KEY IDENTITY(1,1),
+	id VARCHAR(300) PRIMARY KEY,
 	cpf VARCHAR(15) NOT NULL,
 	login VARCHAR(150) NOT NULL UNIQUE,
 	apelido VARCHAR(60),
@@ -21,6 +21,7 @@ CREATE TABLE funcionarios (
 	quantidade_faltas INT,
 	quantidade_faltas_justificadas INT,
 	quantidade_horas_extras INT,
+	role VARCHAR(50),
 	ativo BIT DEFAULT 1,
 
 	id_empresa INT NOT NULL,

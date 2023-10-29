@@ -4,15 +4,16 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
+
 
 import com.ada.api.domain.cargo.Cargo;
 import com.ada.api.domain.empresa.Empresa;
+import com.ada.api.domain.person.Person;
+import com.ada.api.domain.person.UserRole;
 import com.ada.api.domain.registroDePonto.RegistroDePonto;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -20,20 +21,10 @@ import jakarta.persistence.Table;
 
 @Entity(name = "Funcionario")
 @Table(name = "funcionarios")
-public class Funcionario {
+public class Funcionario extends Person  {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 	private String cpf;
-	private String login;
-	private String apelido;
-	private String nomeCompleto;
 	private LocalDate dataNascimento;
-	private String email;
-	private String telefone;
-	private String senha;
-	private String foto;
 	private Integer cargaHorariaDiaria;
 	private Integer cargaHorariaMensal;
 	private LocalTime horarioEntrada;
@@ -46,7 +37,6 @@ public class Funcionario {
 	private Integer quantidadeFaltas;
 	private Integer quantidadeFaltasJustificadas;
 	private Integer quantidadeHorasExtras;
-	private boolean ativo;
 	
 	@ManyToOne
 	@JoinColumn(name="id_empresa")
@@ -62,24 +52,18 @@ public class Funcionario {
 	
 	public Funcionario() {}
 	
-	public Funcionario(Long id, String cpf, String login, String apelido, String nomeCompleto, LocalDate dataNascimento,
+	public Funcionario(UUID id, String cpf, String login, String apelido, String nomeCompleto, LocalDate dataNascimento,
 			String email, String telefone, String senha, String foto, Integer cargaHorariaDiaria,
 			Integer cargaHorariaMensal, LocalTime horarioEntrada, LocalTime horarioIntervaloEntrada,
 			LocalTime horarioIntervaloSaida, LocalTime horarioSaida, LocalTime horarioFolgaEntrada,
 			LocalTime horarioFolgaSaida, String diaFolga, Integer quantidadeFaltas,
 			Integer quantidadeFaltasJustificadas, Integer quantidadeHorasExtras, boolean ativo, Empresa empresa,
-			Cargo cargo, List<RegistroDePonto> registrosDePonto) {
-		super();
-		this.id = id;
+			Cargo cargo, List<RegistroDePonto> registrosDePonto, UserRole role) {
+		
+		super(id, login, apelido, nomeCompleto, email, telefone, senha, foto, ativo, role);
+		
 		this.cpf = cpf;
-		this.login = login;
-		this.apelido = apelido;
-		this.nomeCompleto = nomeCompleto;
 		this.dataNascimento = dataNascimento;
-		this.email = email;
-		this.telefone = telefone;
-		this.senha = senha;
-		this.foto = foto;
 		this.cargaHorariaDiaria = cargaHorariaDiaria;
 		this.cargaHorariaMensal = cargaHorariaMensal;
 		this.horarioEntrada = horarioEntrada;
@@ -92,20 +76,11 @@ public class Funcionario {
 		this.quantidadeFaltas = quantidadeFaltas;
 		this.quantidadeFaltasJustificadas = quantidadeFaltasJustificadas;
 		this.quantidadeHorasExtras = quantidadeHorasExtras;
-		this.ativo = ativo;
 		this.empresa = empresa;
 		this.cargo = cargo;
 		this.registrosDePonto = registrosDePonto;
 	}
 	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public String getCpf() {
 		return cpf;
 	}
@@ -114,68 +89,12 @@ public class Funcionario {
 		this.cpf = cpf;
 	}
 
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
-	}
-
-	public String getApelido() {
-		return apelido;
-	}
-
-	public void setApelido(String apelido) {
-		this.apelido = apelido;
-	}
-
-	public String getNomeCompleto() {
-		return nomeCompleto;
-	}
-
-	public void setNomeCompleto(String nomeCompleto) {
-		this.nomeCompleto = nomeCompleto;
-	}
-
 	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 
 	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
-
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
-	public String getFoto() {
-		return foto;
-	}
-
-	public void setFoto(String foto) {
-		this.foto = foto;
 	}
 
 	public Integer getCargaHorariaDiaria() {
@@ -273,15 +192,7 @@ public class Funcionario {
 	public void setQuantidadeHorasExtras(Integer quantidadeHorasExtras) {
 		this.quantidadeHorasExtras = quantidadeHorasExtras;
 	}
-
-	public boolean isAtivo() {
-		return ativo;
-	}
-
-	public void setAtivo(boolean ativo) {
-		this.ativo = ativo;
-	}
-
+	
 	public Empresa getEmpresa() {
 		return empresa;
 	}
@@ -306,16 +217,20 @@ public class Funcionario {
 		this.registrosDePonto = registrosDePonto;
 	}
 	
-	public Funcionario(CreateFuncionarioDTO data, Cargo cargo, Empresa empresa) {
 
+	public Funcionario(CreateFuncionarioDTO data, String encryptedPassword, Cargo cargo, Empresa empresa) {
+		
+		UUID id = UUID.randomUUID();
+		
+		super.id = id;
 		this.cpf = data.cpf();
-		this.login = data.login();
-		this.apelido = "usuário";
-		this.nomeCompleto = data.nomeCompleto();
+		super.login = data.login();
+		super.apelido = "usuário";
+		super.nomeCompleto = data.nomeCompleto();
 		this.dataNascimento = data.dataNascimento();
-		this.email = data.email();
-		this.telefone = data.telefone();
-		this.senha = data.senha();
+		super.email = data.email();
+		super.telefone = data.telefone();
+		super.senha = encryptedPassword;
 		this.cargaHorariaDiaria = data.cargaHorariaDiaria();
 		this.cargaHorariaMensal = data.cargaHorariaMensal();
 		this.horarioEntrada = data.horarioEntrada();
@@ -328,10 +243,10 @@ public class Funcionario {
 		this.quantidadeFaltas = 0;
 		this.quantidadeFaltasJustificadas = 0;
 		this.quantidadeHorasExtras = 0;
-		this.ativo = true;
+		super.ativo = true;
 		this.empresa = empresa;
 		this.cargo = cargo;
-
+		super.role = UserRole.FUNCIONARIO;
 	}
 
 	public void updateByAdmin(UpdateFuncionarioDTO funcionario, Cargo novoCargo) {
@@ -343,11 +258,11 @@ public class Funcionario {
 		}
 
 		if (funcionario.login() != null && funcionario.login() != "") {
-			this.login = funcionario.login();
+			super.login = funcionario.login();
 		}
 
 		if (funcionario.nomeCompleto() != null && funcionario.nomeCompleto() != "") {
-			this.nomeCompleto = funcionario.nomeCompleto();
+			super.nomeCompleto = funcionario.nomeCompleto();
 		}
 
 		if (funcionario.dataNascimento() != null && funcionario.dataNascimento() != "") {
@@ -358,11 +273,11 @@ public class Funcionario {
 		}
 
 		if (funcionario.email() != null && funcionario.email() != "") {
-			this.email = funcionario.email();
+			super.email = funcionario.email();
 		}
 
 		if (funcionario.telefone() != null && funcionario.telefone() != "") {
-			this.telefone = funcionario.telefone();
+			super.telefone = funcionario.telefone();
 		}
 		
 		if (funcionario.cargaHorariaDiaria() != null && funcionario.cargaHorariaDiaria() != 0) {
@@ -422,15 +337,11 @@ public class Funcionario {
 	}
 
 	public void toAvailable() {
-
 		this.ativo = true;
-
 	}
 	
 	public void toUnavailable() {
-
 		this.ativo = false;
-
 	}
 
 	public void update(BasicUpdateFuncionarioDTO funcionario) {
@@ -438,11 +349,11 @@ public class Funcionario {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		
 		if (funcionario.apelido() != null && funcionario.apelido() != "") {
-			this.apelido = funcionario.apelido();
+			super.apelido = funcionario.apelido();
 		}
 		
 		if (funcionario.nomeCompleto() != null && funcionario.nomeCompleto() != "") {
-			this.nomeCompleto = funcionario.nomeCompleto();
+			super.nomeCompleto = funcionario.nomeCompleto();
 		}
 		
 		if (funcionario.dataNascimento() != null && funcionario.dataNascimento() != "") {
@@ -453,21 +364,22 @@ public class Funcionario {
 		}
 
 		if (funcionario.email() != null && funcionario.email() != "") {
-			this.email = funcionario.email();
+			super.email = funcionario.email();
 		}
 
 		if (funcionario.telefone() != null && funcionario.telefone() != "") {
-			this.telefone = funcionario.telefone();
+			super.telefone = funcionario.telefone();
 		}
 		
 		if (funcionario.senha() != null && funcionario.senha() != "") {
-			this.senha = funcionario.senha();
+			super.senha = funcionario.senha();
 		}
 		
 		if (funcionario.foto() != null && funcionario.foto() != "") {
-			this.foto = funcionario.foto();
+			super.foto = funcionario.foto();
 		}
 		
 	}
-	
+
+		
 }

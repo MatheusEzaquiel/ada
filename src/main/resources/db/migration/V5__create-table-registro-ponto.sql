@@ -8,6 +8,6 @@ CREATE TABLE registro_ponto (
 	ssid_atual VARCHAR(150) NOT NULL,
 	ativo BIT DEFAULT 1,
 
-	id_funcionario INT NOT NULL,
+	id_funcionario VARCHAR(300) NOT NULL,
 	FOREIGN KEY (id_funcionario) REFERENCES funcionarios(id)
 );
