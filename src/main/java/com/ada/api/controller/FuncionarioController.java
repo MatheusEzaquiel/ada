@@ -169,25 +169,45 @@ public class FuncionarioController {
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity update(@RequestBody UpdateFuncionarioDTO data, @PathVariable UUID id) {
+	public ResponseEntity update(@ModelAttribute UpdateFuncionarioDTO data,
+			@RequestParam(value = "foto", required = false) MultipartFile foto,
+			@RequestParam(value = "empresa.id", required= false) Long empresaId,
+			@RequestParam(value = "cargo.id", required = false) Long cargoId,
+			@PathVariable UUID id) {
 
 		try {
-
+				
 				Funcionario funcionario = funcionarioRepository.getReferenceById(id);
 				
 				if(funcionario == null) return ResponseEntity.internalServerError().body("Usuário não encontrado");
 				
 				
 				Cargo novoCargo = null;
+				String newNameImage = null;
 				
-				if (data.cargo() != null) {
-					System.out.println(data.cargo().id());
-					novoCargo = cargoRepository.getReferenceById(data.cargo().id());
+				
+				
+				if (cargoId != null) {
+					novoCargo = cargoRepository.getReferenceById(cargoId);
+				}
+
+				
+				if(foto != null) {
+					
+					newNameImage = imageService.saveImage(foto, "funcionario");
+					
 				}
 				
-				funcionario.updateByAdmin(data, novoCargo);
+				
+				funcionario.updateByAdmin(data, novoCargo, newNameImage);
+				
+				
+				String pathImageSaved = imageService.getImage(newNameImage, "funcionario");
+				
+				System.out.println("path image: " + pathImageSaved);
 
-				DetailFuncionarioDTO detailFuncionarioDTO = funcionarioRepository
+				DetailFuncionarioDTO detailFuncionarioDTO = 
+						funcionarioRepository
 						.listFuncionarioJoinEmpresa(funcionario.getId());
 
 				return ResponseEntity.status(HttpStatus.OK).body(detailFuncionarioDTO);
@@ -195,9 +215,7 @@ public class FuncionarioController {
 
 		} catch (Exception e) {
 
-			System.out.println(e.getMessage());
-
-			return ResponseEntity.internalServerError().body("Erro ao atualizar dados do usuário");
+			return ResponseEntity.internalServerError().body("Erro ao atualizar dados do usuário" + e.getMessage());
 
 		}
 

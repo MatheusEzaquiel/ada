@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ada.api.domain.cargo.Cargo;
 import com.ada.api.domain.empresa.Empresa;
@@ -249,7 +250,7 @@ public class Funcionario extends Person  {
 		super.role = UserRole.FUNCIONARIO;
 	}
 
-	public void updateByAdmin(UpdateFuncionarioDTO funcionario, Cargo novoCargo) {
+	public void updateByAdmin(UpdateFuncionarioDTO funcionario, Cargo novoCargo, String novaFoto) {
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -278,6 +279,10 @@ public class Funcionario extends Person  {
 
 		if (funcionario.telefone() != null && funcionario.telefone() != "") {
 			super.telefone = funcionario.telefone();
+		}
+		
+		if (novaFoto != null && novaFoto != "") {
+			super.foto = novaFoto;
 		}
 		
 		if (funcionario.cargaHorariaDiaria() != null && funcionario.cargaHorariaDiaria() != 0) {
