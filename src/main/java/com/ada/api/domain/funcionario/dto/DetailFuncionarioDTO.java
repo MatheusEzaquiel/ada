@@ -1,11 +1,12 @@
-package com.ada.api.domain.funcionario;
+package com.ada.api.domain.funcionario.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
-import com.ada.api.domain.cargo.CargoDTO;
-import com.ada.api.domain.empresa.EmpresaDTO;
+import com.ada.api.domain.cargo.dto.CargoDTO;
+import com.ada.api.domain.empresa.dto.EmpresaDTO;
+import com.ada.api.domain.funcionario.Funcionario;
 
 public record DetailFuncionarioDTO(
 		UUID id,
@@ -61,7 +62,7 @@ public record DetailFuncionarioDTO(
 		        f.getQuantidadeFaltasJustificadas(),
 		        f.getQuantidadeHorasExtras(),
 		        f.isAtivo(),
-		        new  EmpresaDTO(f.getEmpresa().getId(), f.getEmpresa().getNome()),
+		        new EmpresaDTO(f.getEmpresa().getId(), f.getEmpresa().getNome()),
 		        new CargoDTO(f.getCargo().getId(), f.getCargo().getArea())
 				);
 	}

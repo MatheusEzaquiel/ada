@@ -1,7 +1,13 @@
 package com.ada.api.controller;
 
 import java.util.List;
+import java.util.UUID;
 
+import com.ada.api.domain.registroDePonto.dto.CreateRegistroPontoDTO;
+import com.ada.api.domain.registroDePonto.dto.DetailRegistroDePontoDTO;
+import com.ada.api.domain.registroDePonto.dto.ListRegistroPontoDTO;
+import com.ada.api.repository.EmpresaRepository;
+import com.ada.api.repository.RegistroDePontoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.ada.api.domain.empresa.Empresa;
-import com.ada.api.domain.empresa.EmpresaRepository;
 import com.ada.api.domain.funcionario.Funcionario;
-import com.ada.api.domain.funcionario.FuncionarioRepository;
-import com.ada.api.domain.registroDePonto.CreateRegistroPontoDTO;
-import com.ada.api.domain.registroDePonto.DetailRegistroDePontoDTO;
-import com.ada.api.domain.registroDePonto.ListRegistroPontoDTO;
+import com.ada.api.repository.FuncionarioRepository;
+
 import com.ada.api.domain.registroDePonto.RegistroDePonto;
-import com.ada.api.domain.registroDePonto.RegistroDePontoRepository;
 
 @RestController
 @RequestMapping("/registro-ponto")
@@ -35,7 +37,7 @@ public class RegistroDePontoController {
 	
 	@Autowired
 	private EmpresaRepository empresaRepository;
-	
+
 	@GetMapping
 	public ResponseEntity list() {
 		
@@ -46,7 +48,7 @@ public class RegistroDePontoController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity detail(@PathVariable Long id) {
+	public ResponseEntity detail(@PathVariable UUID id) {
 		
 		DetailRegistroDePontoDTO registroDePonto = new DetailRegistroDePontoDTO(registroRepository.getReferenceById(id));
 		

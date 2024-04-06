@@ -1,4 +1,4 @@
-package com.ada.api.domain.cargo;
+package com.ada.api.domain.cargo.dto;
 
 import java.util.UUID;
 

@@ -6,6 +6,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
+import com.ada.api.domain.funcionario.dto.BasicUpdateFuncionarioDTO;
+import com.ada.api.domain.funcionario.dto.CreateFuncionarioDTO;
+import com.ada.api.domain.funcionario.dto.UpdateFuncionarioDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ada.api.domain.cargo.Cargo;

@@ -3,12 +3,15 @@ package com.ada.api.controller;
 import java.util.List;
 import java.util.UUID;
 
+import com.ada.api.domain.funcionario.dto.*;
+import com.ada.api.domain.registroDePonto.dto.ReportRegistroDePontoDTO;
+import com.ada.api.repository.RegistroDePontoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,21 +26,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.ada.api.domain.cargo.Cargo;
-import com.ada.api.domain.cargo.CargoRepository;
+import com.ada.api.repository.CargoRepository;
 import com.ada.api.domain.empresa.Empresa;
-import com.ada.api.domain.empresa.EmpresaRepository;
-import com.ada.api.domain.funcionario.BasicUpdateFuncionarioDTO;
-import com.ada.api.domain.funcionario.CreateFuncionarioDTO;
-import com.ada.api.domain.funcionario.DetailFuncionarioDTO;
+import com.ada.api.repository.EmpresaRepository;
+
+
 import com.ada.api.domain.funcionario.Funcionario;
-import com.ada.api.domain.funcionario.FuncionarioRepository;
-import com.ada.api.domain.funcionario.ListFuncionarioDTO;
-import com.ada.api.domain.funcionario.ReportFuncionarioDTO;
-import com.ada.api.domain.funcionario.ReportOneFuncionarioDTO;
-import com.ada.api.domain.funcionario.UpdateFuncionarioDTO;
-import com.ada.api.domain.registroDePonto.RegistroDePontoRepository;
-import com.ada.api.domain.registroDePonto.ReportRegistroDePontoDTO;
-import com.ada.api.service.imagem.ImageService;
+import com.ada.api.repository.FuncionarioRepository;
+
+import com.ada.api.service.ImageService;
 
 import jakarta.transaction.Transactional;
 
@@ -59,6 +56,7 @@ public class FuncionarioController {
 	
 	@Autowired
 	private RegistroDePontoRepository registroRepository;
+
 
 	@GetMapping
 	public ResponseEntity list(Pageable pageable) {
@@ -104,11 +102,11 @@ public class FuncionarioController {
 
 	@PostMapping
 	public ResponseEntity create(
-			
+
 			@ModelAttribute CreateFuncionarioDTO data,
 			@RequestParam("foto") MultipartFile foto,
-			@RequestParam("empresa.id") Long empresaId,
-			@RequestParam("cargo.id") Long cargoId,
+			@RequestParam("empresa.id") UUID empresaId,
+			@RequestParam("cargo.id") UUID cargoId,
 			UriComponentsBuilder uriBuilder) {
 
 		try {
@@ -116,10 +114,10 @@ public class FuncionarioController {
 			
 			if(funcionarioRepository.findByLogin(data.login()) != null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário já existente, tente outro login");
 
-	        String encryptedPassword = new BCryptPasswordEncoder().encode(data.senha());
-	        
-	        empresaId = (long) 1;
-	        
+	        //String encryptedPassword = new BCryptPasswordEncoder().encode(data.senha());
+
+			String encryptedPassword = data.senha();
+
 			Empresa empresa = empresaRepository.getReferenceById(empresaId);
 			Cargo cargo = cargoRepository.getReferenceById(cargoId);
 			
@@ -152,12 +150,11 @@ public class FuncionarioController {
 			
 			System.out.println(funcionarioCreated.senha());
 			
-			/*
-			var uri = uriBuilder.path("/funcionarios/{id}").buildAndExpand(funcionario.getId()).toUri();
 
-			return ResponseEntity.created(uri).body(funcionarioCreated);
-			
-			*/
+			//var uri = uriBuilder.path("/funcionarios/{id}").buildAndExpand(funcionario.getId()).toUri();
+
+			//return ResponseEntity.created(uri).body(funcionarioCreated);
+
 			
 			return ResponseEntity.ok(funcionarioCreated);
 
@@ -171,8 +168,8 @@ public class FuncionarioController {
 	@Transactional
 	public ResponseEntity update(@ModelAttribute UpdateFuncionarioDTO data,
 			@RequestParam(value = "foto", required = false) MultipartFile foto,
-			@RequestParam(value = "empresa.id", required= false) Long empresaId,
-			@RequestParam(value = "cargo.id", required = false) Long cargoId,
+			@RequestParam(value = "empresa.id", required= false) UUID empresaId,
+			@RequestParam(value = "cargo.id", required = false) UUID cargoId,
 			@PathVariable UUID id) {
 
 		try {
@@ -274,21 +271,21 @@ public class FuncionarioController {
 		return ResponseEntity.ok(detailFuncionarioDTO);
 
 	}
-	
+
 	@GetMapping("/relatorios/{id}")
 	public ResponseEntity report(@PathVariable UUID id) {
-		
+
 		Funcionario funcionario = funcionarioRepository.getReferenceById(id);
-		
+
 		ReportFuncionarioDTO funcionarioReport = funcionarioRepository.reportFuncionarioById(id);
-		
+
 		List<ReportRegistroDePontoDTO> registrosDePonto = funcionarioRepository.getRegistrosDePonto(id);
-		
+
 		ReportOneFuncionarioDTO report = new ReportOneFuncionarioDTO(funcionarioReport, registrosDePonto);
-		
-		
+
+
 		return ResponseEntity.status(HttpStatus.OK).body(report);
-		
+
 	}
 
 }

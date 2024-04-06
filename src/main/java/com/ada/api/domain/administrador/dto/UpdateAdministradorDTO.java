@@ -1,4 +1,4 @@
-package com.ada.api.domain.administrador;
+package com.ada.api.domain.administrador.dto;
 
 
 public record UpdateAdministradorDTO(

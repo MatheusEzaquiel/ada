@@ -1,4 +1,4 @@
-package com.ada.api.domain.funcionario;
+package com.ada.api.domain.funcionario.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

@@ -1,4 +1,4 @@
-package com.ada.api.service.imagem;
+package com.ada.api.utils;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

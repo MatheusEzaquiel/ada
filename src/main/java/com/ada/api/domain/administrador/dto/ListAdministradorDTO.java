@@ -1,7 +1,8 @@
-package com.ada.api.domain.administrador;
+package com.ada.api.domain.administrador.dto;
 
 import java.util.UUID;
 
+import com.ada.api.domain.administrador.Administrador;
 import com.ada.api.domain.empresa.EmpresaNomeDTO;
 
 public record ListAdministradorDTO(UUID id, String Login, String apelido, String nomeCompleto, String email, String telefone, String senha, String foto, EmpresaNomeDTO empresa) {

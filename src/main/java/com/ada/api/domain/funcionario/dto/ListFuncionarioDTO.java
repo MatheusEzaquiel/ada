@@ -1,10 +1,10 @@
-package com.ada.api.domain.funcionario;
+package com.ada.api.domain.funcionario.dto;
 
 import java.time.LocalTime;
 import java.util.UUID;
 
-import com.ada.api.domain.cargo.CargoDTO;
-import com.ada.api.domain.empresa.EmpresaDTO;
+import com.ada.api.domain.cargo.dto.CargoDTO;
+import com.ada.api.domain.empresa.dto.EmpresaDTO;
 
 public record ListFuncionarioDTO(
 		

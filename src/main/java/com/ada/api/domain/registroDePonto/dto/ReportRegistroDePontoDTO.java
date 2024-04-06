@@ -1,4 +1,4 @@
-package com.ada.api.domain.registroDePonto;
+package com.ada.api.domain.registroDePonto.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

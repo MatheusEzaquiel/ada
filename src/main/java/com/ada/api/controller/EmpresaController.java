@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ada.api.domain.empresa.Empresa;
-import com.ada.api.domain.empresa.EmpresaRepository;
+import com.ada.api.repository.EmpresaRepository;
 
 @RestController
 @RequestMapping("/empresas")
@@ -23,10 +23,8 @@ public class EmpresaController {
 	public List<Empresa> list() {
 		
 		List<Empresa> empresas = empresaRepos.findAll();
-				
-		
 		return empresas;
 		
 	}
-	
+
 }

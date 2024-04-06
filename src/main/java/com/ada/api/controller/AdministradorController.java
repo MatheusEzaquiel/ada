@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.ada.api.repository.EmpresaRepository;
+import com.ada.api.service.AdministradorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,13 +23,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.ada.api.domain.administrador.Administrador;
-import com.ada.api.domain.administrador.AdministradorRepository;
-import com.ada.api.domain.administrador.CreateAdministradorDTO;
-import com.ada.api.domain.administrador.ListAdministradorDTO;
-import com.ada.api.domain.administrador.UpdateAdministradorDTO;
-import com.ada.api.domain.empresa.Empresa;
-import com.ada.api.domain.empresa.EmpresaRepository;
-import com.ada.api.service.imagem.ImageService;
+import com.ada.api.repository.AdministradorRepository;
+import com.ada.api.domain.administrador.dto.CreateAdministradorDTO;
+import com.ada.api.domain.administrador.dto.ListAdministradorDTO;
+import com.ada.api.domain.administrador.dto.UpdateAdministradorDTO;
+import com.ada.api.service.ImageService;
 
 import jakarta.transaction.Transactional;
 
@@ -37,7 +37,9 @@ public class AdministradorController {
 
 	@Autowired
 	AdministradorRepository adminRepos;
-	
+	@Autowired
+	AdministradorService adminService;
+
 	@Autowired
 	EmpresaRepository empresaRepos;
 	
@@ -68,43 +70,13 @@ public class AdministradorController {
 	}
 	
 	@PostMapping
-	public ResponseEntity create(@ModelAttribute CreateAdministradorDTO data, @RequestParam("foto") MultipartFile foto,
-            @RequestParam("empresa.id") Long empresaId, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<Administrador> create(@ModelAttribute CreateAdministradorDTO data, @RequestParam("foto") MultipartFile foto,
+						 @RequestParam("empresa.id") UUID empresaId, UriComponentsBuilder uriBuilder) {
 
-		try {
-			
-			String encryptedPassword = new BCryptPasswordEncoder().encode(data.senha());
+		Administrador admin = adminService.save(data, foto, empresaId);
+		URI uri = uriBuilder.path("/administradores/{id}").buildAndExpand(admin.getId()).toUri();
 
-			Empresa empresa = new Empresa();
-			empresa.setId(empresaId);
-			
-			empresa = empresaRepos.getReferenceById(empresaId);
-			
-			
-			String dominioEmpresa = empresa.getDominio();
-			
-			
-			String imagem = imageService.saveImage(foto, "admin");
-			
-			Administrador admin = new Administrador(data, encryptedPassword, imagem, empresa);
-			
-			
-			admin.setLogin(admin.getLogin() + dominioEmpresa);
-			
-			Administrador adminCreated = adminRepos.save(admin);
-			
-			ListAdministradorDTO adminDTO = new ListAdministradorDTO(adminCreated, imageService.getImage(adminCreated.getFoto(), "admin"));
-			
-			URI uri = uriBuilder.path("/administradores/{id}").buildAndExpand(adminDTO.id()).toUri();
-			
-			return ResponseEntity.created(uri).body(adminDTO);
-
-		} catch (Exception e) {
-			
-			System.out.println(e.getMessage());
-			return ResponseEntity.internalServerError().body("Erro:" + e.getMessage());
-			
-		}
+		return ResponseEntity.created(uri).body(admin);
 
 	}
 
@@ -119,7 +91,7 @@ public class AdministradorController {
 			
 			if (admin == null) return ResponseEntity.badRequest().body("Erro: Não existe um administrador com este ID");
 
-			admin.update(data);
+			//admin.update(data);
 
 			ListAdministradorDTO adminDTO = new ListAdministradorDTO(admin);
 

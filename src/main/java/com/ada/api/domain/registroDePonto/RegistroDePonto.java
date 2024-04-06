@@ -5,6 +5,7 @@ import java.time.LocalTime;
 
 import com.ada.api.domain.funcionario.Funcionario;
 
+import com.ada.api.domain.registroDePonto.dto.CreateRegistroPontoDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

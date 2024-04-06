@@ -1,6 +1,7 @@
 package com.ada.api.domain.empresa;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.ada.api.domain.administrador.Administrador;
 import com.ada.api.domain.funcionario.Funcionario;
@@ -20,8 +21,8 @@ import lombok.EqualsAndHashCode;
 public class Empresa {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
 	private String cnpj;
 	private String nome;
 	private String dominio;
@@ -48,7 +49,7 @@ public class Empresa {
 			String numero, String rua, String bairro, String cidade, String uf, String pais, boolean ativo,
 			List<Funcionario> funcionarios, List<Administrador> administradores) {
 		
-		this.id = id;
+		this.id = UUID.randomUUID();
 		this.cnpj = cnpj;
 		this.nome = nome;
 		this.dominio = dominio;
@@ -66,11 +67,11 @@ public class Empresa {
 		
 	}
 	
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

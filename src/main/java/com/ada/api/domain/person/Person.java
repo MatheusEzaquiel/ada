@@ -3,11 +3,11 @@ package com.ada.api.domain.person;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-
+/*
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+*/
 import com.ada.api.domain.person.UserRole;
 
 import jakarta.persistence.Entity;
@@ -19,7 +19,7 @@ import jakarta.persistence.InheritanceType;
 
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Entity
-public class Person implements UserDetails {
+public class Person {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
@@ -130,7 +130,7 @@ public class Person implements UserDetails {
 	public void setRole(UserRole role) {
 		this.role = role;
 	}
-
+/*
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_FUNCIONARIO"));
@@ -166,5 +166,5 @@ public class Person implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}	
-
+*/
 }

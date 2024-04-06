@@ -1,6 +1,7 @@
 package com.ada.api.domain.cargo;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.ada.api.domain.empresa.Empresa;
 import com.ada.api.domain.funcionario.Funcionario;
@@ -26,8 +27,8 @@ import lombok.Setter;
 public class Cargo {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
 	private String area;
 	private boolean ativo;
 	
@@ -41,7 +42,7 @@ public class Cargo {
 	
 	public Cargo() {}
 	
-	public Cargo(Long id, String area, boolean ativo, Empresa empresa, List<Funcionario> funcionarios) {
+	public Cargo(UUID id, String area, boolean ativo, Empresa empresa, List<Funcionario> funcionarios) {
 	
 		this.id = id;
 		this.area = area;
@@ -51,11 +52,11 @@ public class Cargo {
 		
 	}
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

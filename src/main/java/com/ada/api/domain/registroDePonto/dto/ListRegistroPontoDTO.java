@@ -1,9 +1,10 @@
-package com.ada.api.domain.registroDePonto;
+package com.ada.api.domain.registroDePonto.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import com.ada.api.domain.funcionario.FuncionarioNameDTO;
+import com.ada.api.domain.funcionario.dto.FuncionarioNameDTO;
+import com.ada.api.domain.registroDePonto.RegistroDePonto;
 
 public record ListRegistroPontoDTO(
 		Long id,
