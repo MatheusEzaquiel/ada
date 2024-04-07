@@ -1,5 +1,3 @@
-package com.ada.api.domain.empresa;
+package com.ada.api.domain.empresa.dto;
 
-public record EmpresaNomeDTO(String nome) {
-
-}
+public record EmpresaNomeDTO(String nome) {}

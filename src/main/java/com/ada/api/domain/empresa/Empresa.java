@@ -4,15 +4,11 @@ import java.util.List;
 import java.util.UUID;
 
 import com.ada.api.domain.administrador.Administrador;
+import com.ada.api.domain.empresa.dto.CreateEmpresaDTO;
 import com.ada.api.domain.funcionario.Funcionario;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
 @Entity(name = "Empresa")
@@ -23,17 +19,29 @@ public class Empresa {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
+	@Column(name = "cnpj", unique = true)
 	private String cnpj;
+	@Column(name = "nome", unique = true)
 	private String nome;
+	@Column(name = "dominio", unique = true)
 	private String dominio;
-	private String area_atuacao;
+	@Column(name = "area_atuacao", unique = true)
+	private String areaAtuacao;
+	@Column(name="ssid")
 	private String ssid;
+	@Column(name="numero")
 	private String numero;
+	@Column(name="rua")
 	private String rua;
+	@Column(name="bairro")
 	private String bairro;
+	@Column(name="cidade")
 	private String cidade;
+	@Column(name="uf", length = 2)
 	private String uf;
+	@Column(name="pais")
 	private String pais;
+	@Column(name="ativo")
 	private boolean ativo;
 
 	@OneToMany(mappedBy = "empresa")
@@ -45,15 +53,15 @@ public class Empresa {
 	
 	public Empresa() {}
 	
-	public Empresa(Long id, String cnpj, String nome, String dominio, String area_atuacao, String ssid,
+	public Empresa(UUID id, String cnpj, String nome, String dominio, String areaAtuacao, String ssid,
 			String numero, String rua, String bairro, String cidade, String uf, String pais, boolean ativo,
 			List<Funcionario> funcionarios, List<Administrador> administradores) {
 		
-		this.id = UUID.randomUUID();
+		this.id = id;
 		this.cnpj = cnpj;
 		this.nome = nome;
 		this.dominio = dominio;
-		this.area_atuacao = area_atuacao;
+		this.areaAtuacao = areaAtuacao;
 		this.ssid = ssid;
 		this.numero = numero;
 		this.rua = rua;
@@ -65,6 +73,21 @@ public class Empresa {
 		this.funcionarios = funcionarios;
 		this.administradores = administradores;
 		
+	}
+	public Empresa(CreateEmpresaDTO empresaDTO) {
+		this.id = UUID.randomUUID();
+		this.cnpj = empresaDTO.cnpj();
+		this.nome = empresaDTO.nome();
+		this.dominio = empresaDTO.dominio();
+		this.areaAtuacao = empresaDTO.areaAtuacao();
+		this.ssid = empresaDTO.ssid();
+		this.numero = empresaDTO.numero();
+		this.rua = empresaDTO.rua();
+		this.bairro = empresaDTO.bairro();
+		this.cidade = empresaDTO.cidade();
+		this.uf = empresaDTO.uf();
+		this.pais = empresaDTO.pais();
+		this.ativo = true;
 	}
 	
 	public UUID getId() {
@@ -99,12 +122,12 @@ public class Empresa {
 		this.dominio = dominio;
 	}
 
-	public String getArea_atuacao() {
-		return area_atuacao;
+	public String getAreaAtuacao() {
+		return areaAtuacao;
 	}
 
-	public void setArea_atuacao(String area_atuacao) {
-		this.area_atuacao = area_atuacao;
+	public void setAreaAtuacao(String areaAtuacao) {
+		this.areaAtuacao = areaAtuacao;
 	}
 
 	public String getSsid() {
