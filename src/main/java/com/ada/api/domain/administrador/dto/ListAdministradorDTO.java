@@ -5,7 +5,7 @@ import java.util.UUID;
 import com.ada.api.domain.administrador.Administrador;
 import com.ada.api.domain.empresa.EmpresaNomeDTO;
 
-public record ListAdministradorDTO(UUID id, String Login, String apelido, String nomeCompleto, String email, String telefone, String senha, String foto, EmpresaNomeDTO empresa) {
+public record ListAdministradorDTO(UUID id, String Login, String apelido, String nomeCompleto, String email, String telefone, String foto, EmpresaNomeDTO empresa) {
 	
 	public ListAdministradorDTO(Administrador admins, String foto) {
 		
@@ -16,8 +16,8 @@ public record ListAdministradorDTO(UUID id, String Login, String apelido, String
 		        admins.getNomeCompleto(),
 		        admins.getEmail(),
 		        admins.getTelefone(),
-		        admins.getSenha(),
 		        foto,
+
 		        new EmpresaNomeDTO(admins.getEmpresa().getNome())
 		);
 		
@@ -32,7 +32,6 @@ public record ListAdministradorDTO(UUID id, String Login, String apelido, String
 		        admins.getNomeCompleto(),
 		        admins.getEmail(),
 		        admins.getTelefone(),
-		        admins.getSenha(),
 		        admins.getFoto(),
 		        new EmpresaNomeDTO(admins.getEmpresa().getNome())
 		);
