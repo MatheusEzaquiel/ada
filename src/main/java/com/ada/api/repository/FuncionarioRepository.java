@@ -1,6 +1,7 @@
 package com.ada.api.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.ada.api.domain.funcionario.Funcionario;
@@ -20,7 +21,8 @@ import com.ada.api.domain.registroDePonto.dto.ReportRegistroDePontoDTO;
 
 public interface FuncionarioRepository extends JpaRepository<Funcionario, UUID>{
 
-	
+	Optional<Person> findByLogin(String login);
+
 	@Query("SELECT new com.ada.api.domain.funcionario.dto.ListFuncionarioDTO" +
 		       "(f.id, f.login, f.apelido, f.nomeCompleto, " +
 		       "f.foto, f.cargaHorariaDiaria, f.cargaHorariaMensal, " +
@@ -31,7 +33,19 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, UUID>{
 		       "FROM Funcionario f INNER JOIN f.empresa INNER JOIN f.cargo")
 	Page<ListFuncionarioDTO> listAllFuncionarios(Pageable pageable);
 
-	
+	@Query("SELECT new com.ada.api.domain.funcionario.dto.ListFuncionarioDTO" +
+			"(f.id, f.login, f.apelido, f.nomeCompleto, " +
+			"f.foto, f.cargaHorariaDiaria, f.cargaHorariaMensal, " +
+			"f.horarioEntrada, f.horarioIntervaloEntrada, f.horarioIntervaloSaida, f.horarioSaida, " +
+			"f.quantidadeFaltas, f.quantidadeFaltasJustificadas, f.quantidadeHorasExtras, " +
+			"new com.ada.api.domain.empresa.dto.EmpresaDTO(f.empresa.id, f.empresa.nome)," +
+			"new com.ada.api.domain.cargo.dto.CargoDTO(f.cargo.id, f.cargo.area)) " +
+			"FROM Funcionario f INNER JOIN f.empresa INNER JOIN f.cargo " +
+			"WHERE f.ativo = true"
+	)
+	Page<ListFuncionarioDTO> listAllEnabledFuncionarios(Pageable pageable);
+
+	/*
 
 	@Query("SELECT new com.ada.api.domain.funcionario.dto.DetailFuncionarioDTO" +
 	        "(f.id, f.cpf, f.login, f.apelido, f.nomeCompleto, f.dataNascimento, f.email, " +
@@ -68,5 +82,5 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, UUID>{
 	//UserDetails findByLogin(String login);
 	Person findByLogin(String login);
 
-	Funcionario getReferenceById(UUID id);
+	Funcionario getReferenceById(UUID id);*/
 }

@@ -64,7 +64,7 @@ public record DetailFuncionarioDTO(
 		        f.isAtivo(),
 		        new EmpresaDTO(f.getEmpresa().getId(), f.getEmpresa().getNome()),
 		        new CargoDTO(f.getCargo().getId(), f.getCargo().getArea())
-				);
+		);
 	}
 
 

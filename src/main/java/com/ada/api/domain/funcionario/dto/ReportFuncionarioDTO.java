@@ -4,7 +4,7 @@ import java.time.LocalTime;
 import java.util.UUID;
 
 import com.ada.api.domain.cargo.dto.ReportCargoDTO;
-import com.ada.api.domain.empresa.dto.ReportEmpresaDTO;
+import com.ada.api.domain.report.dto.ReportEmpresaDTO;
 
 public record ReportFuncionarioDTO(
 		UUID id,

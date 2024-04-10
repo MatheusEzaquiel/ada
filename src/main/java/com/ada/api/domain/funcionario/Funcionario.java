@@ -2,14 +2,10 @@ package com.ada.api.domain.funcionario;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
-import com.ada.api.domain.funcionario.dto.BasicUpdateFuncionarioDTO;
 import com.ada.api.domain.funcionario.dto.CreateFuncionarioDTO;
-import com.ada.api.domain.funcionario.dto.UpdateFuncionarioDTO;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.ada.api.domain.cargo.Cargo;
 import com.ada.api.domain.empresa.Empresa;
@@ -220,13 +216,10 @@ public class Funcionario extends Person  {
 	public void setRegistrosDePonto(List<RegistroDePonto> registrosDePonto) {
 		this.registrosDePonto = registrosDePonto;
 	}
-	
+
 
 	public Funcionario(CreateFuncionarioDTO data, String encryptedPassword, Cargo cargo, Empresa empresa) {
-		
-		UUID id = UUID.randomUUID();
-		
-		super.id = id;
+		super.id = UUID.randomUUID();
 		this.cpf = data.cpf();
 		super.login = data.login();
 		super.apelido = "usuário";
@@ -252,142 +245,5 @@ public class Funcionario extends Person  {
 		this.cargo = cargo;
 		super.role = UserRole.FUNCIONARIO;
 	}
-
-	public void updateByAdmin(UpdateFuncionarioDTO funcionario, Cargo novoCargo, String novaFoto) {
-
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-		if (funcionario.cpf() != null && funcionario.cpf() != "") {
-			this.cpf = funcionario.cpf();
-		}
-
-		if (funcionario.login() != null && funcionario.login() != "") {
-			super.login = funcionario.login();
-		}
-
-		if (funcionario.nomeCompleto() != null && funcionario.nomeCompleto() != "") {
-			super.nomeCompleto = funcionario.nomeCompleto();
-		}
-
-		if (funcionario.dataNascimento() != null && funcionario.dataNascimento() != "") {
-
-			LocalDate dataNascimento = LocalDate.parse(funcionario.dataNascimento(), formatter);
-			this.dataNascimento = dataNascimento;
-
-		}
-
-		if (funcionario.email() != null && funcionario.email() != "") {
-			super.email = funcionario.email();
-		}
-
-		if (funcionario.telefone() != null && funcionario.telefone() != "") {
-			super.telefone = funcionario.telefone();
-		}
-		
-		if (novaFoto != null && novaFoto != "") {
-			super.foto = novaFoto;
-		}
-		
-		if (funcionario.cargaHorariaDiaria() != null && funcionario.cargaHorariaDiaria() != 0) {
-			this.cargaHorariaDiaria = funcionario.cargaHorariaDiaria();
-		}
-
-		if (funcionario.cargaHorariaMensal() != null && funcionario.cargaHorariaMensal() != 0) {
-			this.cargaHorariaMensal = funcionario.cargaHorariaMensal();
-		}
-
-		if (funcionario.horarioEntrada() != null && funcionario.horarioEntrada() != "") {
-			LocalTime horarioEntrada = LocalTime.parse(funcionario.horarioEntrada());
-			this.horarioEntrada = horarioEntrada;
-		}
-
-		if (funcionario.horarioIntervaloEntrada() != null && funcionario.horarioIntervaloEntrada() != "") {
-			LocalTime horarioIntervaloEntrada = LocalTime.parse(funcionario.horarioIntervaloEntrada());
-			this.horarioIntervaloEntrada = horarioIntervaloEntrada;
-		}
-
-		if (funcionario.horarioIntervaloSaida() != null && funcionario.horarioIntervaloSaida() != "") {
-			LocalTime horarioIntervaloSaida = LocalTime.parse(funcionario.horarioIntervaloSaida());
-			this.horarioIntervaloSaida = horarioIntervaloSaida;
-		}
-
-		if (funcionario.horarioSaida() != null && funcionario.horarioSaida() != "") {
-			LocalTime horarioSaida = LocalTime.parse(funcionario.horarioSaida());
-			this.horarioSaida = horarioSaida;
-		}
-
-		if (funcionario.horarioFolgaEntrada() != null && funcionario.horarioFolgaEntrada() != "") {
-			LocalTime horarioFolgaEntrada = LocalTime.parse(funcionario.horarioFolgaEntrada());
-			this.horarioFolgaEntrada = horarioFolgaEntrada;
-		}
-
-		if (funcionario.horarioFolgaSaida() != null && funcionario.horarioFolgaSaida() != "") {
-			LocalTime horarioFolgaSaida = LocalTime.parse(funcionario.horarioFolgaSaida());
-			this.horarioFolgaSaida = horarioFolgaSaida;
-		}
-
-		if (funcionario.diaFolga() != null && funcionario.diaFolga() != "") {
-			this.diaFolga = funcionario.diaFolga();
-		}
-
-		if (funcionario.quantidadeFaltasJustificadas() != null && funcionario.quantidadeFaltasJustificadas() != 0) {
-			this.quantidadeFaltasJustificadas = funcionario.quantidadeFaltasJustificadas();
-		}
-
-		if (funcionario.quantidadeHorasExtras() != null && funcionario.quantidadeHorasExtras() != 0) {
-			this.quantidadeFaltasJustificadas = funcionario.quantidadeFaltasJustificadas();
-		}
-		
-		if (novoCargo != null) {
-			this.cargo = novoCargo;
-		}
-		
-	}
-
-	public void toAvailable() {
-		this.ativo = true;
-	}
-	
-	public void toUnavailable() {
-		this.ativo = false;
-	}
-
-	public void update(BasicUpdateFuncionarioDTO funcionario) {
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		
-		if (funcionario.apelido() != null && funcionario.apelido() != "") {
-			super.apelido = funcionario.apelido();
-		}
-		
-		if (funcionario.nomeCompleto() != null && funcionario.nomeCompleto() != "") {
-			super.nomeCompleto = funcionario.nomeCompleto();
-		}
-		
-		if (funcionario.dataNascimento() != null && funcionario.dataNascimento() != "") {
-
-			LocalDate dataNascimento = LocalDate.parse(funcionario.dataNascimento(), formatter);
-			this.dataNascimento = dataNascimento;
-
-		}
-
-		if (funcionario.email() != null && funcionario.email() != "") {
-			super.email = funcionario.email();
-		}
-
-		if (funcionario.telefone() != null && funcionario.telefone() != "") {
-			super.telefone = funcionario.telefone();
-		}
-		
-		if (funcionario.senha() != null && funcionario.senha() != "") {
-			super.senha = funcionario.senha();
-		}
-		
-		if (funcionario.foto() != null && funcionario.foto() != "") {
-			super.foto = funcionario.foto();
-		}
-		
-	}
-
 		
 }
